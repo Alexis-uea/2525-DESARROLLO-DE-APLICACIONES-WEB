@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitio Web</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a mi página Web.</h1>
+        <p><strong>Este es un proyecto simple.</strong></p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#sección1"></a></li>
+            <li><a href="#sección2"></a></li>
+            <li><a href="#sección3"></a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="sección1">
+            <h2>Encabezado h1</h2>
+            <p><em>Este es un párrafo de ejemplo en la sección 1 </em></p>
+            <p><strong>Este es un párrafo con énfasis fuerte</strong></p>
+        </section>
+
+        <section id="s ección2">
+            <h3>Encabezado h3</h3>
+            <ul>
+                <li>Elemento de lista no ordenada</li>
+                <li>Elemento de lista no ordenada</li>
+                <li>Elemento de lista no ordenada</li>
+            </ul>
+            <ol>
+                <li>Elemento de lista ordenada</li>
+                <li>Elemento de lista ordenada</li>
+                <li>Elemento de lista ordenada</li>
+            </ol>
+        </section>
+
+        <section id="sección3">
+            <h3>Sección de Multimedia</h3>
+            <img src="/mi-pagina-html5./assets/img/imagen de prueva.jpeg" alt="Imagen de ejemplo">
+            <video controls>
+                <source src="/mi-pagina-html5./assets/video/video de prueva.mp4" type="video/mp4">
+                Tu navegador no soporta el video.
+            </video>
+        </section>
+
+        <section>
+            <h2>Formulario de Contacto</h2>
+            <form action="#" method="post">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+                
+                <button type="submit">Enviar</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Tabla de Ejemplo</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Alice</td>
+                        <td>30</td>
+                    </tr>
+                    <tr>
+                        <td>Bob</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>Charlie</td>
+                        <td>35</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Mi Sitio Web. Todos los derechos reservados.</p>
+        <p><a href="https://github.com" target="_blank">Visita nuestro repositorio en GitHub</a></p>
+    </footer>
+</body>
+</html>
