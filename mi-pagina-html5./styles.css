@@ -1,0 +1,37 @@
+/* Reset de algunos estilos básicos */
+body, h1, h2, h3, p,ul, ol, table {
+    margin: 0;
+    padding: 0;
+    font-family: Arial,sans-serif;
+}
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: #4CAF50;
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+}
