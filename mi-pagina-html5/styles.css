@@ -1,4 +1,15 @@
-/* Reset de márgenes y padding */
+/* Variables de colores usando :root */
+:root {
+    --primary-color: #4CAF50;
+    --primary-color-hover: #45a049;
+    --background-color: #f0f0f0;
+    --text-color: #333;
+    --header-bg: #333;
+    --white: #fff;
+    --light-border: #ddd;
+}
+
+/* Reset de márgenes, padding y box-sizing */
 * {
     margin: 0;
     padding: 0;
@@ -7,24 +18,23 @@
 
 /* Estilo general del cuerpo */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
     line-height: 1.6;
-    margin: 0;
 }
 
-/* Header */
+/* Encabezado principal */
 header {
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--white);
     text-align: center;
-    padding: 20px 0;
+    padding: 2rem 1rem;
 }
 
 header h1 {
     font-size: 2.5rem;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
 }
 
 header p {
@@ -33,46 +43,48 @@ header p {
 
 /* Navegación */
 nav {
-    background-color: #333;
+    background-color: var(--header-bg);
 }
 
 nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    padding: 10px 0;
+    padding: 0.8rem 0;
 }
 
 nav ul li {
-    margin: 0 15px;
+    margin: 0 1rem;
 }
 
 nav ul li a {
+    color: var(--white);
     text-decoration: none;
-    color: white;
     font-size: 1.1rem;
-    padding: 8px 12px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
 nav ul li a:hover {
     background-color: #555;
-    border-radius: 4px;
 }
 
-/* Main */
+/* Contenido principal */
 main {
-    padding: 30px 10%;
+    padding: 3rem 10%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 section {
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
 }
 
-/* Estilos de los encabezados */
+/* Encabezados */
 h2, h3 {
-    color: #4CAF50;
-    margin-bottom: 15px;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
 }
 
 h2 {
@@ -81,35 +93,37 @@ h2 {
 
 h3 {
     font-size: 1.5rem;
-    margin-top: 20px;
+    margin-top: 1.5rem;
 }
 
-/* Estilos de los párrafos */
+/* Párrafos */
 p {
     font-size: 1.1rem;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
 }
 
-/* Estilo para el formulario */
+/* Formularios */
 form {
-    background-color: #fff;
-    padding: 20px;
+    background-color: var(--white);
+    padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 form label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     font-weight: bold;
 }
 
-form input, form textarea {
+form input,
+form textarea {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--light-border);
     border-radius: 5px;
+    font-size: 1rem;
 }
 
 form textarea {
@@ -117,66 +131,65 @@ form textarea {
 }
 
 form button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--white);
     border: none;
-    padding: 10px 15px;
-    cursor: pointer;
+    padding: 0.75rem 1.2rem;
     border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 form button:hover {
-    background-color: #45a049;
+    background-color: var(--primary-color-hover);
 }
 
-/* Estilos para la tabla */
+/* Tablas */
 table {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 1.5rem;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: var(--white);
     border-radius: 5px;
+    overflow: hidden;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-table, th, td {
-    border: 1px solid #ddd;
-}
-
 th, td {
-    padding: 12px;
+    padding: 1rem;
+    border: 1px solid var(--light-border);
     text-align: left;
 }
 
 th {
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--white);
 }
 
-/* Estilos para imágenes */
+/* Imágenes */
 img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
-/* Footer */
+/* Pie de página */
 footer {
-    background-color: #333;
-    color: white;
+    background-color: var(--header-bg);
+    color: var(--white);
     text-align: center;
-    padding: 20px 0;
+    padding: 2rem 1rem;
 }
 
 footer p {
     font-size: 1rem;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
 }
 
 footer a {
-    color: #4CAF50;
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
