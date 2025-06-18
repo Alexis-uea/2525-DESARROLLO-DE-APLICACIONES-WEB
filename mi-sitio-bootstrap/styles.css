@@ -1,34 +1,65 @@
-/* Sobrescribir Bootstrap */
+/* ========================
+   Personalización Bootstrap
+   ======================== */
+
+/* Botón primario personalizado */
 .btn-primary {
   background-color: #ff5733;
   border-color: #ff5733;
+  color: #fff;
+  font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
   background-color: #c70039;
+  border-color: #c70039;
   transform: scale(1.05);
 }
 
-/* Animaciones en imágenes */
-.card img:hover {
-  transform: scale(1.03);
+/* ========================
+   Imágenes y Cards
+   ======================== */
+
+/* Animación suave al pasar el mouse por imágenes */
+.card img {
   transition: transform 0.3s ease-in-out;
 }
 
-/* Redondear bordes */
-.card {
-  border-radius: 12px;
+.card img:hover {
+  transform: scale(1.03);
 }
 
-/* Media Query personalizada */
+/* Estética general de las cards */
+.card {
+  border-radius: 12px;
+  overflow: hidden; /* Para que la imagen respete el borde redondeado */
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================
+   Responsive / Adaptabilidad
+   ======================== */
+
 @media (max-width: 768px) {
   body {
     background-color: #fefefe;
   }
 
   header h1 {
-    font-size: 1.5rem;
-    color: #333;
+    font-size: 1.6rem;
+    color: #222;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .btn-primary {
+    font-size: 1rem;
   }
 }
