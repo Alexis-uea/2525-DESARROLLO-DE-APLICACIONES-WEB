@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Responsivo en móviles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería Interactiva</title>
+  <!-- Enlaze al archivo de estilos -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Galería de Imágenes Interactiva</h1>
+
+    <!-- Controles: campo para URL + botones -->
+    <section class="controles">
+      <!-- Input para ingresar la URL de la imagen -->
+      <input type="url" id="image-url" placeholder="Ingresa la URL de la imagen">
+      <!-- Botón para agregar imagen -->
+      <button id="add-image">Agregar Imagen</button>
+      <!-- Botón para eliminar imagen seleccionada -->
+      <button id="delete-image">Eliminar Imagen Seleccionada</button>
+    </section>
+
+    <!-- Contenedor de la galería -->
+    <section id="gallery" class="galeria"></section>
+  </main>
+
+  <!-- Enlaze al script de JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
