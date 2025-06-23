@@ -1,0 +1,49 @@
+/* Estilos básicos del cuerpo */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Controles arriba de la galería */
+.controles {
+  margin-bottom: 20px;
+}
+
+/* Estilo del input para la URL */
+input[type="url"] {
+  width: 300px;
+  padding: 8px;
+  margin-right: 10px;
+}
+
+/* Estilo básico para los botones */
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* Contenedor de la galería en forma de cuadrícula */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Estilo general de las imágenes */
+.galeria img {
+  width: 100%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Imagen seleccionada: borde azul y sombra */
+.galeria img.selected {
+  border: 3px solid #007BFF;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+  transform: scale(1.05);
+}
