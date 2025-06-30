@@ -1,0 +1,91 @@
+/* Estilos generales del cuerpo */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+/* Estilos del formulario */
+form {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ccc;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Título del formulario */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos de las etiquetas */
+label {
+  display: block;
+  margin-bottom: 15px;
+}
+
+/* Estilos de los campos de entrada */
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Estilos cuando el campo es válido */
+input:valid {
+  border-color: green;
+}
+
+/* Estilos cuando el campo es inválido */
+input:invalid {
+  border-color: red;
+}
+
+/* Estilo de los mensajes de error */
+.error {
+  color: red;
+  font-size: 0.9em;
+  display: block;
+  height: 18px;
+}
+
+/* Mensaje de éxito */
+.exito {
+  color: green;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Estilos para los botones */
+.botones {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Estilos para el pie de página */
+footer {
+  margin-top: 40px;
+  padding: 12px;
+  text-align: center;
+  background-color: #eaeaea;
+  border-top: 1px solid #ccc;
+  font-size: 0.9em;
+}
+
+footer a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
