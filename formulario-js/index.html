@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario con Validación</title>
+  <!-- Vinculamos el archivo CSS para los estilos -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Contenedor del formulario -->
+  <form id="formulario">
+    <h2>Registro</h2>
+
+    <!-- Campo de Nombre -->
+    <label>Nombre:
+      <input type="text" id="nombre" required />
+      <!-- Mensaje de error para el nombre -->
+      <span class="error" id="error-nombre"></span>
+    </label>
+
+    <!-- Campo de Correo Electrónico -->
+    <label>Correo Electrónico:
+      <input type="email" id="correo" required />
+      <span class="error" id="error-correo"></span>
+    </label>
+
+    <!-- Campo de Contraseña -->
+    <label>Contraseña:
+      <input type="password" id="password" required />
+      <span class="error" id="error-password"></span>
+    </label>
+
+    <!-- Confirmación de Contraseña -->
+    <label>Confirmar Contraseña:
+      <input type="password" id="confirm-password" required />
+      <span class="error" id="error-confirm-password"></span>
+    </label>
+
+    <!-- Campo de Edad -->
+    <label>Edad:
+      <input type="number" id="edad" required />
+      <span class="error" id="error-edad"></span>
+    </label>
+
+    <!-- Botones -->
+    <div class="botones">
+      <!-- Botón de envío, deshabilitado por defecto -->
+      <button type="submit" id="submit" disabled>Enviar</button>
+      <!-- Botón para reiniciar el formulario -->
+      <button type="reset">Reiniciar</button>
+    </div>
+
+    <!-- Mensaje de éxito (se muestra al enviar) -->
+    <p id="exito" class="exito"></p>
+  </form>
+
+<!-- Pie de página -->
+<footer>
+  <p>
+    &copy; 2025 - Desarrollado por <strong>[Tu Nombre]</strong> |
+    <a href="https://github.com/usuario/repositorio" target="_blank">Ver en GitHub</a>
+  </p>
+</footer>
+
+</body>
+
+  <!-- Vinculamos el archivo JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
