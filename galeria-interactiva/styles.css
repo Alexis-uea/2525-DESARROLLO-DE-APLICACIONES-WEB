@@ -47,3 +47,27 @@ button {
   box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
   transform: scale(1.05);
 }
+
+/* Pie de página */
+footer {
+    background-color: var(--header-bg);
+    color: var(--white);
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+footer p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #ddd;
+}
