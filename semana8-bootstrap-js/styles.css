@@ -5,3 +5,8 @@ header h1 {
   letter-spacing: 1px;
   color: #ffcc00;
 }
+
+.carousel-item img {
+  max-height: 200px; /* Ajusta el alto como prefieras (200px, 150px, etc.) */
+  object-fit: cover;
+}
