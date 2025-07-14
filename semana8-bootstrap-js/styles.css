@@ -7,6 +7,10 @@ header h1 {
 }
 
 .carousel-item img {
-  max-height: 200px; /* Ajusta el alto como prefieras (200px, 150px, etc.) */
-  object-fit: cover;
+  max-height: 200px;
+  max-width: 100%;
+  width: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  display: block;
 }
