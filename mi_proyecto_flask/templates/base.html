@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!-- Usamos una variable de Jinja2 para el título dinámico -->
+    <title>{{ title }}</title>
+    <!-- Vinculamos la hoja de estilos CSS estática -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Mi Sitio Flask</h1>
+        <!-- Navegación entre páginas -->
+        <nav>
+            <a href="/">Inicio</a> |
+            <a href="/about">Acerca de</a>
+        </nav>
+    </header>
+
+    <!-- Sección dinámica que será sobrescrita por otras plantillas -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2025 Mi Proyecto Flask</p>
+    </footer>
+</body>
+</html>
