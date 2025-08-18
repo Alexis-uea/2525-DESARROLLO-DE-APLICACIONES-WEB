@@ -1,0 +1,20 @@
+/* Estilo general del cuerpo del documento */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cabecera y pie de página con fondo oscuro */
+header, footer {
+    background-color: #333;
+    color: white;
+    padding: 1em;
+}
+
+/* Estilo para los enlaces de navegación */
+nav a {
+    color: white;
+    margin-right: 10px;
+    text-decoration: none;
+}
