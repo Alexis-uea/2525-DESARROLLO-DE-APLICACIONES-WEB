@@ -1,25 +1,41 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Inventario</h2>
+    <h2>Inventario</h2>
 
-<!-- Enlace para ir a agregar un nuevo producto -->
-<a href="{{ url_for('agregar_producto') }}">Agregar nuevo producto</a>
+    <!-- Botón para agregar nuevo producto -->
+    <a href="{{ url_for('agregar_producto') }}">
+        <button>Agregar nuevo producto</button>
+    </a>
+    <br><br>
 
-<!-- Tabla que muestra los productos -->
-<table border="1" cellpadding="5" cellspacing="0">
-    <tr>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-    </tr>
-    {% for producto in productos %}
-    <tr>
-        <td>{{ producto.codigo }}</td>
-        <td>{{ producto.nombre }}</td>
-        <td>{{ producto.cantidad }}</td>
-        <td>${{ "%.2f"|format(producto.precio) }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <!-- Tabla con productos -->
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.codigo }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>${{ "%.2f"|format(producto.precio) }}</td>
+            <td>
+                <!-- Botón para editar producto -->
+                <a href="{{ url_for('editar_producto', codigo=producto.codigo) }}">
+                    <button>Editar</button>
+                </a>
+
+                <!-- Formulario para eliminar producto -->
+                <form action="{{ url_for('eliminar_producto', codigo=producto.codigo) }}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
