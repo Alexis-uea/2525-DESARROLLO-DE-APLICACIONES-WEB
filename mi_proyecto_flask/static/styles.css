@@ -1,20 +1,105 @@
 /* Estilo general del cuerpo del documento */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
 }
 
 /* Cabecera y pie de página con fondo oscuro */
 header, footer {
-    background-color: #333;
-    color: white;
-    padding: 1em;
+    background-color: #222;
+    color: #fff;
+    padding: 1.5em;
+    text-align: center;
+}
+
+/* Título principal del sitio */
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Navegación del sitio */
+nav {
+    margin-top: 0.5em;
 }
 
 /* Estilo para los enlaces de navegación */
 nav a {
-    color: white;
-    margin-right: 10px;
+    color: #f5f5f5;
+    margin: 0 15px;
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #1abc9c; /* Verde agua al pasar el cursor */
+}
+
+/* Contenedor principal para el contenido */
+main {
+    padding: 2em;
+    max-width: 1000px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 0.75em;
+    text-align: left;
+}
+
+table th {
+    background-color: #eee;
+}
+
+/* Botones generales */
+button {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 0.5em 1.2em;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #16a085;
+}
+
+/* Formularios */
+form label {
+    display: block;
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"] {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.25em;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Pie de página */
+footer {
+    margin-top: 3em;
+    font-size: 0.9em;
 }
