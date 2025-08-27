@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Página de Inicio</h2>
+    <h2 style="margin-bottom: 10px;">Bienvenido</h2>
 
-    <p>Bienvenido a mi sistema de gestión de inventario.</p>
-    <p>Este sistema permite gestionar productos, controlar stock y registrar ventas.</p>
+    <p>Este es un sistema avanzado para la gestión de inventario.</p>
+    <p>Desde aquí puedes administrar productos, controlar el stock y mantener organizada tu tienda.</p>
 
     <!-- Enlaces con estilo para funcionalidades clave -->
-    <div style="margin-top: 20px;">
-        <a href="/inventario" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
+    <div style="margin-top: 30px;">
+        <!-- Botón para ver inventario -->
+        <a href="{{ url_for('ver_inventario') }}"
+           style="display: inline-block; padding: 12px 24px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
             📦 Ver Inventario
         </a>
 
-        <a href="/agregar" style="display: inline-block; padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">
+        <!-- Botón para agregar producto -->
+        <a href="{{ url_for('agregar_producto') }}"
+           style="display: inline-block; padding: 12px 24px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; margin-left: 15px;">
             ➕ Agregar Producto
         </a>
     </div>
