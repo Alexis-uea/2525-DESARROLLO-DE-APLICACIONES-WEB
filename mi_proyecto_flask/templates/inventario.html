@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Inventario</h2>
+
+<!-- Enlace para ir a agregar un nuevo producto -->
+<a href="{{ url_for('agregar_producto') }}">Agregar nuevo producto</a>
+
+<!-- Tabla que muestra los productos -->
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+    </tr>
+    {% for producto in productos %}
+    <tr>
+        <td>{{ producto.codigo }}</td>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.cantidad }}</td>
+        <td>${{ "%.2f"|format(producto.precio) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
