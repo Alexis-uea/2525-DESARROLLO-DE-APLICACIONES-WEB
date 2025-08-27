@@ -18,10 +18,16 @@ def index():
 def about():
     return render_template('about.html', title='Acerca de')
 
-# Ruta que muestra la lista de productos del inventario
-@app.route('/inventario')
+# Ruta que muestra la lista de productos del inventario y permite búsqueda
+@app.route('/inventario', methods=['GET', 'POST'])
 def mostrar_inventario():
-    productos = inventario.obtener_productos()
+    if request.method == 'POST':
+        # Buscar productos por nombre (ignorando mayúsculas)
+        nombre = request.form.get('nombre', '')
+        productos = inventario.buscar_por_nombre(nombre)
+    else:
+        productos = inventario.obtener_productos()
+    
     return render_template('inventario.html', title='Inventario', productos=productos)
 
 # Ruta para agregar un nuevo producto
