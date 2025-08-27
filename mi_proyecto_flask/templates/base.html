@@ -2,22 +2,22 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Usamos una variable de Jinja2 para el título dinámico -->
     <title>{{ title }}</title>
-    <!-- Vinculamos la hoja de estilos CSS estática -->
+    <!-- Estilos CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
         <h1>Mi Sitio Flask</h1>
-        <!-- Navegación entre páginas -->
+        <!-- Navegación principal -->
         <nav>
-            <a href="/">Inicio</a> |
-            <a href="/about">Acerca de</a>
+            <a href="{{ url_for('index') }}">Inicio</a> |
+            <a href="{{ url_for('about') }}">Acerca de</a> |
+            <a href="{{ url_for('mostrar_inventario') }}">Inventario</a>
         </nav>
     </header>
 
-    <!-- Sección dinámica que será sobrescrita por otras plantillas -->
+    <!-- Contenido que cambia según la plantilla -->
     <main>
         {% block content %}{% endblock %}
     </main>
