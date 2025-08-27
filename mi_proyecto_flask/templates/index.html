@@ -1,23 +1,8 @@
+<!-- Esta plantilla hereda de base.html -->
 {% extends 'base.html' %}
 
+<!-- Sobrescribimos el bloque content definido en base.html -->
 {% block content %}
-    <h2 style="margin-bottom: 10px;">Bienvenido</h2>
-
-    <p>Este es un sistema avanzado para la gestión de inventario.</p>
-    <p>Desde aquí puedes administrar productos, controlar el stock y mantener organizada tu tienda.</p>
-
-    <!-- Enlaces con estilo para funcionalidades clave -->
-    <div style="margin-top: 30px;">
-        <!-- Botón para ver inventario -->
-        <a href="{{ url_for('ver_inventario') }}"
-           style="display: inline-block; padding: 12px 24px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
-            📦 Ver Inventario
-        </a>
-
-        <!-- Botón para agregar producto -->
-        <a href="{{ url_for('agregar_producto') }}"
-           style="display: inline-block; padding: 12px 24px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; margin-left: 15px;">
-            ➕ Agregar Producto
-        </a>
-    </div>
+    <h2>Página de Inicio</h2>
+    <p>Bienvenido a mi sitio web hecho con Flask y Jinja2.</p>
 {% endblock %}
