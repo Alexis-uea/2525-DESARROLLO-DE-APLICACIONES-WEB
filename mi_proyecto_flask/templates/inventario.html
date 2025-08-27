@@ -3,6 +3,14 @@
 {% block content %}
     <h2>Inventario</h2>
 
+    <!-- Formulario de búsqueda por nombre -->
+    <form method="post" style="margin-bottom: 1em;">
+        <input type="text" name="nombre" placeholder="Buscar por nombre" required>
+        <input type="submit" value="Buscar">
+        <!-- Botón para restablecer búsqueda -->
+        <a href="{{ url_for('mostrar_inventario') }}"><button type="button">Ver todos</button></a>
+    </form>
+
     <!-- Botón para agregar nuevo producto -->
     <a href="{{ url_for('agregar_producto') }}">
         <button>Agregar nuevo producto</button>
