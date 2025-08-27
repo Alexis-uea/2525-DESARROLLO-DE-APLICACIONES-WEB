@@ -1,4 +1,4 @@
-/* Estilo general del cuerpo del documento */
+/* === Estilo general === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -7,7 +7,7 @@ body {
     color: #333;
 }
 
-/* Cabecera y pie de página con fondo oscuro */
+/* === Encabezado y pie de página === */
 header, footer {
     background-color: #222;
     color: #fff;
@@ -15,18 +15,21 @@ header, footer {
     text-align: center;
 }
 
-/* Título principal del sitio */
 header h1 {
     margin: 0;
     font-size: 2em;
 }
 
-/* Navegación del sitio */
+footer {
+    margin-top: 3em;
+    font-size: 0.9em;
+}
+
+/* === Navegación === */
 nav {
     margin-top: 0.5em;
 }
 
-/* Estilo para los enlaces de navegación */
 nav a {
     color: #f5f5f5;
     margin: 0 15px;
@@ -39,34 +42,50 @@ nav a:hover {
     color: #1abc9c; /* Verde agua al pasar el cursor */
 }
 
-/* Contenedor principal para el contenido */
+/* === Contenido principal === */
 main {
     padding: 2em;
     max-width: 1000px;
     margin: auto;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* Tablas */
+/* === Tabla de inventario === */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1em;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 table th, table td {
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     padding: 0.75em;
-    text-align: left;
+    text-align: center;
+    vertical-align: middle;
 }
 
 table th {
-    background-color: #eee;
+    background-color: #f2f2f2;
+    color: #333;
 }
 
-/* Botones generales */
-button {
+table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* === Botones === */
+button,
+input[type="submit"],
+input[type="button"] {
     background-color: #1abc9c;
     color: white;
     border: none;
@@ -74,14 +93,26 @@ button {
     font-size: 1em;
     cursor: pointer;
     border-radius: 4px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s;
 }
 
-button:hover {
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
     background-color: #16a085;
+    transform: scale(1.03);
 }
 
-/* Formularios */
+/* Botón de acción en línea (Eliminar, Editar) */
+form.inline {
+    display: inline;
+}
+
+/* === Formularios === */
+form {
+    margin-bottom: 1em;
+}
+
 form label {
     display: block;
     margin-top: 1em;
@@ -98,8 +129,61 @@ form input[type="number"] {
     border-radius: 4px;
 }
 
-/* Pie de página */
-footer {
-    margin-top: 3em;
-    font-size: 0.9em;
+/* === Responsive design === */
+@media (max-width: 768px) {
+    main {
+        padding: 1em;
+    }
+
+    table, th, td {
+        font-size: 0.9em;
+    }
+
+    nav a {
+        display: block;
+        margin: 10px 0;
+    }
+
+    button,
+    input[type="submit"],
+    input[type="button"] {
+        width: 100%;
+        margin-top: 0.5em;
+    }
+}
+/* === Formulario de búsqueda === */
+.buscar-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1.5em;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.buscar-form input[type="text"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5em;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* Botones dentro del formulario de búsqueda */
+.buscar-form input[type="submit"],
+.buscar-form button {
+    padding: 0.5em 1em;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.buscar-form input[type="submit"]:hover,
+.buscar-form button:hover {
+    background-color: #2980b9;
+    transform: scale(1.03);
 }
