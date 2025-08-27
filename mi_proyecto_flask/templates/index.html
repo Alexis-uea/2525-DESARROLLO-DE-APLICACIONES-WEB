@@ -1,8 +1,19 @@
-<!-- Esta plantilla hereda de base.html -->
 {% extends 'base.html' %}
 
-<!-- Sobrescribimos el bloque content definido en base.html -->
 {% block content %}
     <h2>Página de Inicio</h2>
-    <p>Bienvenido a mi sitio web hecho con Flask y Jinja2.</p>
+
+    <p>Bienvenido a mi sistema de gestión de inventario.</p>
+    <p>Este sistema permite gestionar productos, controlar stock y registrar ventas.</p>
+
+    <!-- Enlaces con estilo para funcionalidades clave -->
+    <div style="margin-top: 20px;">
+        <a href="/inventario" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
+            📦 Ver Inventario
+        </a>
+
+        <a href="/agregar" style="display: inline-block; padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">
+            ➕ Agregar Producto
+        </a>
+    </div>
 {% endblock %}
