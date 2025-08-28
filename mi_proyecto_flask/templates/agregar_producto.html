@@ -1,24 +1,59 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Agregar Producto</h2>
+    <h2>Agregar Nuevo Producto</h2>
 
-<!-- Formulario con Flask-WTF -->
-<form method="post">
-    {{ form.hidden_tag() }}  <!-- CSRF Token -->
+    <!-- Formulario para agregar producto -->
+    <form method="post">
+        <!-- Token CSRF para seguridad -->
+        {{ form.csrf_token }}
 
-    <label for="codigo">Código:</label>
-    {{ form.codigo(size=32) }}<br><br>
+        <label for="codigo">Código:</label>
+        {{ form.codigo(size=32) }}
+        {% if form.codigo.errors %}
+            <ul>
+            {% for error in form.codigo.errors %}
+                <li style="color: red;">{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
 
-    <label for="nombre">Nombre:</label>
-    {{ form.nombre(size=64) }}<br><br>
+        <label for="nombre">Nombre:</label>
+        {{ form.nombre(size=64) }}
+        {% if form.nombre.errors %}
+            <ul>
+            {% for error in form.nombre.errors %}
+                <li style="color: red;">{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
 
-    <label for="cantidad">Cantidad:</label>
-    {{ form.cantidad(min=1) }}<br><br>
+        <label for="cantidad">Cantidad:</label>
+        {{ form.cantidad() }}
+        {% if form.cantidad.errors %}
+            <ul>
+            {% for error in form.cantidad.errors %}
+                <li style="color: red;">{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
 
-    <label for="precio">Precio:</label>
-    {{ form.precio(step="0.01") }}<br><br>
+        <label for="precio">Precio:</label>
+        {{ form.precio() }}
+        {% if form.precio.errors %}
+            <ul>
+            {% for error in form.precio.errors %}
+                <li style="color: red;">{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
 
-    {{ form.submit() }}  <!-- Botón de envío -->
-</form>
+        {{ form.submit() }}
+    </form>
+
+    <!-- Botón para regresar al inventario -->
+    <br>
+    <a href="{{ url_for('mostrar_inventario') }}">
+        <button>Volver al Inventario</button>
+    </a>
 {% endblock %}
