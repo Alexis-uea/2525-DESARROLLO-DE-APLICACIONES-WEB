@@ -4,8 +4,9 @@
     <h2>Página de Inicio</h2>
     <p>Bienvenido a mi sitio web hecho con Flask y Jinja2.</p>
 
-    <!-- Botón que redirige al inventario -->
-    <a href="{{ url_for('mostrar_inventario') }}">
-        <button>Ir al Inventario</button>
+    <!-- Botón que redirige al inventario.
+         Nota: usar <a> con clase de botón es más accesible que un <button> dentro de <a> -->
+    <a href="{{ url_for('mostrar_inventario') }}" class="btn">
+        Ir al Inventario
     </a>
 {% endblock %}
