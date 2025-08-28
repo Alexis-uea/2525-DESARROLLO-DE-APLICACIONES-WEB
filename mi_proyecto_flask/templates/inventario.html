@@ -3,18 +3,22 @@
 {% block content %}
     <h2>Inventario</h2>
 
-    <!-- Formulario de búsqueda por nombre -->
+    <!-- Búsqueda por nombre -->
     <form method="post" class="buscar-form">
         <input type="text" name="nombre" placeholder="Buscar por nombre" required>
         <input type="submit" value="Buscar">
-        <!-- Botón para restablecer búsqueda -->
-        <a href="{{ url_for('mostrar_inventario') }}"><button type="button">Ver todos</button></a>
+
+        <!-- Botón para ver todo -->
+        <a href="{{ url_for('mostrar_inventario') }}">
+            <button type="button">Ver todos</button>
+        </a>
     </form>
 
     <!-- Botón para agregar nuevo producto -->
     <a href="{{ url_for('agregar_producto') }}">
         <button>Agregar nuevo producto</button>
     </a>
+
     <br><br>
 
     <!-- Tabla con productos -->
@@ -26,6 +30,7 @@
             <th>Precio</th>
             <th>Acciones</th>
         </tr>
+
         {% for producto in productos %}
         <tr>
             <td>{{ producto.codigo }}</td>
@@ -33,13 +38,14 @@
             <td>{{ producto.cantidad }}</td>
             <td>${{ "%.2f"|format(producto.precio) }}</td>
             <td>
-                <!-- Botón para editar producto -->
+                <!-- Enlace para editar -->
                 <a href="{{ url_for('editar_producto', codigo=producto.codigo) }}">
                     <button>Editar</button>
                 </a>
 
-                <!-- Formulario para eliminar producto -->
+                <!-- Botón de eliminar con protección CSRF -->
                 <form action="{{ url_for('eliminar_producto', codigo=producto.codigo) }}" method="post" style="display:inline;">
+                    {{ csrf_token() }}
                     <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
                 </form>
             </td>
