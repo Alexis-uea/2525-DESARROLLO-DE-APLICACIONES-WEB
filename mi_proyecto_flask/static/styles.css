@@ -198,3 +198,20 @@ form.inline {
         align-items: stretch;
     }
 }
+/* === CLASE PARA ENLACES COMO BOTONES === */
+.btn {
+    display: inline-block;
+    padding: 0.5em 1.2em;
+    background-color: #1abc9c;
+    color: white !important; /* forzar el color blanco */
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #16a085;
+    transform: scale(1.03);
+}
