@@ -1,4 +1,4 @@
-/* === Estilo general === */
+/* === ESTILOS GENERALES === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -7,7 +7,7 @@ body {
     color: #333;
 }
 
-/* === Encabezado y pie de página === */
+/* === ENCABEZADO Y PIE DE PÁGINA === */
 header, footer {
     background-color: #222;
     color: #fff;
@@ -25,7 +25,7 @@ footer {
     font-size: 0.9em;
 }
 
-/* === Navegación === */
+/* === NAVEGACIÓN === */
 nav {
     margin-top: 0.5em;
 }
@@ -42,17 +42,65 @@ nav a:hover {
     color: #1abc9c; /* Verde agua al pasar el cursor */
 }
 
-/* === Contenido principal === */
+/* === CONTENIDO PRINCIPAL === */
 main {
     padding: 2em;
     max-width: 1000px;
     margin: auto;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* === Tabla de inventario === */
+/* === FORMULARIOS (Agregar / Editar) === */
+form {
+    margin-bottom: 1.5em;
+}
+
+form label {
+    display: block;
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="email"],
+form input[type="password"],
+form input[type="decimal"],
+form input[type="date"],
+form select {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.25em;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+/* === BOTONES GENERALES === */
+button,
+input[type="submit"],
+input[type="button"] {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 0.5em 1.2em;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background-color: #16a085;
+    transform: scale(1.03);
+}
+
+/* === TABLA DE INVENTARIO === */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -82,54 +130,48 @@ table tr:hover {
     background-color: #f1f1f1;
 }
 
-/* === Botones === */
-button,
-input[type="submit"],
-input[type="button"] {
-    background-color: #1abc9c;
-    color: white;
-    border: none;
-    padding: 0.5em 1.2em;
-    font-size: 1em;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, transform 0.2s;
-}
-
-button:hover,
-input[type="submit"]:hover,
-input[type="button"]:hover {
-    background-color: #16a085;
-    transform: scale(1.03);
-}
-
-/* Botón de acción en línea (Eliminar, Editar) */
+/* === BOTONES DE ACCIÓN EN TABLA (EDITAR, ELIMINAR) === */
 form.inline {
     display: inline;
 }
 
-/* === Formularios === */
-form {
-    margin-bottom: 1em;
+/* === FORMULARIO DE BÚSQUEDA EN INVENTARIO === */
+.buscar-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1.5em;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-form label {
-    display: block;
-    margin-top: 1em;
-    font-weight: bold;
-}
-
-form input[type="text"],
-form input[type="number"] {
-    width: 100%;
+.buscar-form input[type="text"] {
+    flex: 1;
+    min-width: 200px;
     padding: 0.5em;
-    margin-top: 0.25em;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
     border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
 }
 
-/* === Responsive design === */
+.buscar-form input[type="submit"],
+.buscar-form button {
+    padding: 0.5em 1em;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.buscar-form input[type="submit"]:hover,
+.buscar-form button:hover {
+    background-color: #2980b9;
+    transform: scale(1.03);
+}
+
+/* === RESPONSIVE DESIGN === */
 @media (max-width: 768px) {
     main {
         padding: 1em;
@@ -150,40 +192,9 @@ form input[type="number"] {
         width: 100%;
         margin-top: 0.5em;
     }
-}
-/* === Formulario de búsqueda === */
-.buscar-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 1.5em;
-    align-items: center;
-    justify-content: flex-start;
-}
 
-.buscar-form input[type="text"] {
-    flex: 1;
-    min-width: 200px;
-    padding: 0.5em;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-}
-
-/* Botones dentro del formulario de búsqueda */
-.buscar-form input[type="submit"],
-.buscar-form button {
-    padding: 0.5em 1em;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s;
-}
-
-.buscar-form input[type="submit"]:hover,
-.buscar-form button:hover {
-    background-color: #2980b9;
-    transform: scale(1.03);
+    .buscar-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
