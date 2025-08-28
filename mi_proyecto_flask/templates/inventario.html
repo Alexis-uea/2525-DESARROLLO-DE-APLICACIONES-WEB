@@ -5,23 +5,26 @@
 
     <!-- Formulario para buscar productos por nombre -->
     <form method="post" class="buscar-form">
+        <!-- Token CSRF necesario para validar el formulario -->
+        {{ form.csrf_token }}
+
         <input type="text" name="nombre" placeholder="Buscar por nombre" required>
         <input type="submit" value="Buscar">
 
-        <!-- Botón para ver todos los productos -->
+        <!-- Botón para mostrar todos los productos sin filtro -->
         <a href="{{ url_for('mostrar_inventario') }}">
             <button type="button">Ver todos</button>
         </a>
     </form>
 
-    <!-- Botón para ir a la vista de agregar nuevo producto -->
+    <!-- Botón para ir a la página de agregar nuevo producto -->
     <a href="{{ url_for('agregar_producto') }}">
         <button>Agregar nuevo producto</button>
     </a>
 
     <br><br>
 
-    <!-- Tabla que muestra los productos del inventario -->
+    <!-- Tabla con los productos -->
     <table border="1" cellpadding="5" cellspacing="0">
         <tr>
             <th>Código</th>
@@ -38,19 +41,15 @@
             <td>{{ producto.cantidad }}</td>
             <td>${{ "%.2f"|format(producto.precio) }}</td>
             <td>
-                <!-- Botón para editar producto -->
+                <!-- Botón para editar -->
                 <a href="{{ url_for('editar_producto', codigo=producto.codigo) }}">
                     <button>Editar</button>
                 </a>
 
-                <!-- Formulario para eliminar producto (usa método POST y token CSRF oculto) -->
-                <form action="{{ url_for('eliminar_producto', codigo=producto.codigo) }}"
-                      method="post"
-                      style="display:inline;">
-                    <!-- Campo oculto del token CSRF -->
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit"
-                            onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
+                <!-- Formulario para eliminar (POST + CSRF) -->
+                <form action="{{ url_for('eliminar_producto', codigo=producto.codigo) }}" method="post" style="display:inline;">
+                    {{ form.csrf_token }}
+                    <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
                 </form>
             </td>
         </tr>
