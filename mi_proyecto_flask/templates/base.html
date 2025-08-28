@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Para que sea responsive -->
     <title>{{ title }}</title>
 
     <!-- Estilos globales -->
@@ -13,13 +14,16 @@
 
         <!-- Menú de navegación -->
         <nav>
-            <a href="{{ url_for('index') }}">Inicio</a> |
-            <a href="{{ url_for('about') }}">Acerca de</a> |
-            <a href="{{ url_for('mostrar_inventario') }}">Productos</a>
+            <!-- Usamos listas para mejor accesibilidad (opcional) -->
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 10px;">
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('about') }}">Acerca de</a></li>
+                <li><a href="{{ url_for('mostrar_inventario') }}">Productos</a></li>
+            </ul>
         </nav>
     </header>
 
-    <!-- Contenido dinámico que cambian las demás páginas -->
+    <!-- Contenido dinámico que se inyecta desde otras plantillas -->
     <main>
         {% block content %}{% endblock %}
     </main>
