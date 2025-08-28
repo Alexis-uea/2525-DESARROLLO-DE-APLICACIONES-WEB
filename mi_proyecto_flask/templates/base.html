@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <!-- Estilos CSS -->
+
+    <!-- Estilos globales -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
         <h1>Mi Sitio Flask</h1>
-        <!-- Navegación principal -->
+
+        <!-- Menú de navegación -->
         <nav>
             <a href="{{ url_for('index') }}">Inicio</a> |
             <a href="{{ url_for('about') }}">Acerca de</a> |
@@ -17,7 +19,7 @@
         </nav>
     </header>
 
-    <!-- Contenido que cambia según la plantilla -->
+    <!-- Contenido dinámico que cambian las demás páginas -->
     <main>
         {% block content %}{% endblock %}
     </main>
