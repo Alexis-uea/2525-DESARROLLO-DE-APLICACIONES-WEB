@@ -1,23 +1,105 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Acerca de Amazonía Market</h2>
-    
-    <div style="max-width: 800px; line-height: 1.6;">
-        <p><strong>Amazonía Market</strong> es más que un supermercado, es tu partner en la gestión 
-        de inventarios y control de stock. Nuestro sistema te ayuda a mantener el control 
-        total de tu negocio.</p>
-        
-        <h3>Nuestra Misión</h3>
-        <p>Proveer herramientas de gestión eficientes para pequeños y medianos supermercados, 
-        facilitando el control de inventario y mejorando la rentabilidad.</p>
-        
-        <h3>Características Principales</h3>
-        <ul>
-            <li>Gestión completa de productos</li>
-            <li>Control de stock en tiempo real</li>
-            <li>Búsqueda avanzada de productos</li>
-            <li>Interfaz intuitiva y fácil de usar</li>
-        </ul>
+<!-- Header de la página About -->
+<section class="about-header">
+    <h1>Sobre Amazonía Market</h1>
+    <p class="subtitle">Más de 15 años sirviendo a la comunidad con los mejores productos</p>
+</section>
+
+<!-- Historia de la empresa -->
+<section class="about-section">
+    <div class="about-content">
+        <div class="about-text">
+            <h2>Nuestra Historia</h2>
+            <p>Amazonía Market nació en 2008 con la visión de crear un supermercado que ofrezca no solo productos de calidad, sino también una experiencia de compra excepcional. Desde nuestros humildes comienzos como una pequeña tienda familiar, hemos crecido hasta convertirnos en un referente de la industria en la región.</p>
+            
+            <p>Nuestro nombre "Amazonía" rinde homenaje a la riqueza natural de nuestra región y nuestro compromiso con productos frescos, naturales y sostenibles. Cada día trabajamos para mantener los valores que nos hicieron crecer: honestidad, calidad y servicio al cliente.</p>
+        </div>
+        <div class="about-image">
+            <img src="{{ url_for('static', filename('about-store.jpg') }}" alt="Nuestra tienda física" class="store-image">
+        </div>
     </div>
+</section>
+
+<!-- Misión y Visión -->
+<section class="mission-vision">
+    <div class="mv-card">
+        <h3>🌱 Nuestra Misión</h3>
+        <p>Proveer alimentos y productos de la más alta calidad a precios accesibles, mientras apoyamos a productores locales y practicamos el comercio sostenible.</p>
+    </div>
+    <div class="mv-card">
+        <h3>🚀 Nuestra Visión</h3>
+        <p>Ser el supermercado preferido de la región, reconocido por nuestra calidad, servicio excepcional y compromiso con la comunidad y el medio ambiente.</p>
+    </div>
+</section>
+
+<!-- Valores -->
+<section class="values">
+    <h2>Nuestros Valores</h2>
+    <div class="values-grid">
+        <div class="value-item">
+            <div class="value-icon">🛒</div>
+            <h4>Calidad Garantizada</h4>
+            <p>Seleccionamos rigurosamente cada producto que ofrecemos a nuestros clientes.</p>
+        </div>
+        <div class="value-item">
+            <div class="value-icon">🤝</div>
+            <h4>Servicio Personalizado</h4>
+            <p>Nuestros clientes son nuestra prioridad y nos esforzamos por superar sus expectativas.</p>
+        </div>
+        <div class="value-item">
+            <div class="value-icon">🌍</div>
+            <h4>Sostenibilidad</h4>
+            <p>Implementamos prácticas responsables con el medio ambiente en todas nuestras operaciones.</p>
+        </div>
+        <div class="value-item">
+            <div class="value-icon">🏆</div>
+            <h4>Innovación Constante</h4>
+            <p>Buscamos siempre mejorar nuestros procesos y servicios para beneficio de nuestros clientes.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Equipo directivo -->
+<section class="team">
+    <h2>Nuestro Equipo Directivo</h2>
+    <div class="team-grid">
+        <div class="team-member">
+            <div class="member-image">
+                <img src="{{ url_for('static', filename('ceo.jpg') }}" alt="CEO de Amazonía Market">
+            </div>
+            <h4>Carlos Mendoza</h4>
+            <p>Fundador & CEO</p>
+        </div>
+        <div class="team-member">
+            <div class="member-image">
+                <img src="{{ url_for('static', filename('cfo.jpg') }}" alt="CFO de Amazonía Market">
+            </div>
+            <h4>María González</h4>
+            <p>Directora Financiera</p>
+        </div>
+        <div class="team-member">
+            <div class="member-image">
+                <img src="{{ url_for('static', filename('coo.jpg') }}" alt="COO de Amazonía Market">
+            </div>
+            <h4>Roberto Silva</h4>
+            <p>Director de Operaciones</p>
+        </div>
+    </div>
+</section>
+
+<!-- Llamado a acción -->
+<section class="about-cta">
+    <h2>¿Necesitas más información?</h2>
+    <p>Estamos aquí para responder todas tus preguntas y ayudarte con lo que necesites</p>
+    <div class="cta-buttons">
+        <a href="{{ url_for('mostrar_inventario') }}" class="btn btn-primary">
+            Comenzar a Gestionar
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            Volver al Inicio
+        </a>
+    </div>
+</section>
 {% endblock %}
