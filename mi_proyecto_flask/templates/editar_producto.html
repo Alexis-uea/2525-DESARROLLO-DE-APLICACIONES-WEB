@@ -1,39 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Editar Producto - Código: {{ producto.codigo }}</h2>
+    <h2>✏️ Editar Producto - {{ producto.codigo }}</h2>
 
-    <!-- Formulario para editar producto -->
     <form method="post">
-        <!-- Token CSRF para seguridad -->
         {{ form.csrf_token }}
 
-        <label for="nombre">Nombre:</label>
+        <label for="nombre">Nombre del Producto:</label>
         {{ form.nombre(size=64) }}
         {% if form.nombre.errors %}
-            <ul>
+            <ul class="errors">
             {% for error in form.nombre.errors %}
-                <li style="color: red;">{{ error }}</li>
+                <li>{{ error }}</li>
             {% endfor %}
             </ul>
         {% endif %}
 
-        <label for="cantidad">Cantidad:</label>
+        <label for="cantidad">Cantidad en Stock:</label>
         {{ form.cantidad() }}
         {% if form.cantidad.errors %}
-            <ul>
+            <ul class="errors">
             {% for error in form.cantidad.errors %}
-                <li style="color: red;">{{ error }}</li>
+                <li>{{ error }}</li>
             {% endfor %}
             </ul>
         {% endif %}
 
-        <label for="precio">Precio:</label>
+        <label for="precio">Precio de Venta:</label>
         {{ form.precio() }}
         {% if form.precio.errors %}
-            <ul>
+            <ul class="errors">
             {% for error in form.precio.errors %}
-                <li style="color: red;">{{ error }}</li>
+                <li>{{ error }}</li>
             {% endfor %}
             </ul>
         {% endif %}
@@ -41,9 +39,8 @@
         {{ form.submit() }}
     </form>
 
-    <!-- Botón para regresar al inventario -->
     <br>
     <a href="{{ url_for('mostrar_inventario') }}">
-        <button>Volver al Inventario</button>
+        <button>← Volver al Inventario</button>
     </a>
 {% endblock %}
