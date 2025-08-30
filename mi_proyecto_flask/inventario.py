@@ -1,90 +1,113 @@
 import sqlite3
-from producto import Producto  # Importamos la clase Producto para crear objetos producto
+from producto import Producto
 
 class Inventario:
-    def __init__(self, db_name='inventario.db'):
+    """
+    Clase para gestionar el inventario de Amazonía Market
+    Maneja persistencia en base de datos SQLite y operaciones CRUD
+    """
+    
+    def __init__(self, db_name='amazonia_market.db'):
         """
-        Inicializa la conexión a la base de datos SQLite y carga los productos en memoria.
+        Inicializa la conexión con la base de datos y carga productos en memoria
+        
+        Args:
+            db_name (str): Nombre del archivo de base de datos SQLite
         """
-        # Conectarse a la base de datos SQLite. check_same_thread=False permite usar en diferentes hilos (Flask).
+        # Conexión a SQLite con soporte para múltiples hilos (necesario para Flask)
         self.conn = sqlite3.connect(db_name, check_same_thread=False)
         self.cursor = self.conn.cursor()
+        self.productos = {}  # Diccionario en memoria para rápido acceso
         
-        self.productos = {}  # Diccionario para almacenar productos en memoria, clave = código
-        
-        self.crear_tabla()    # Crear tabla si no existe
-        self.cargar_productos()  # Cargar productos existentes desde la base de datos
+        self.crear_tabla()      # Crear tabla si no existe
+        self.cargar_productos() # Cargar productos desde BD a memoria
 
     def crear_tabla(self):
-        """
-        Crea la tabla 'producto' si no existe.
-        """
+        """Crea la tabla de productos en la base de datos si no existe"""
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS producto (
+            CREATE TABLE IF NOT EXISTS productos (
                 codigo TEXT PRIMARY KEY,
                 nombre TEXT NOT NULL,
                 cantidad INTEGER NOT NULL,
                 precio REAL NOT NULL
             )
         ''')
-        self.conn.commit()  # Guardar cambios en la base de datos
+        self.conn.commit()
 
     def cargar_productos(self):
-        """
-        Carga todos los productos de la base de datos a memoria (diccionario).
-        """
-        self.cursor.execute('SELECT * FROM producto')
-        for codigo, nombre, cantidad, precio in self.cursor.fetchall():
+        """Carga todos los productos desde la base de datos a memoria"""
+        self.cursor.execute('SELECT * FROM productos')
+        for fila in self.cursor.fetchall():
+            codigo, nombre, cantidad, precio = fila
             self.productos[codigo] = Producto(codigo, nombre, cantidad, precio)
 
     def agregar_producto(self, producto):
         """
-        Inserta un nuevo producto en la base de datos y lo agrega al diccionario en memoria.
-        """
-        self.cursor.execute('''
-            INSERT INTO producto (codigo, nombre, cantidad, precio)
-            VALUES (?, ?, ?, ?)
-        ''', (producto.codigo, producto.nombre, producto.cantidad, producto.precio))
-        self.conn.commit()
+        Agrega un nuevo producto a la base de datos y al inventario en memoria
         
-        # Agregar a memoria
-        self.productos[producto.codigo] = producto
+        Args:
+            producto (Producto): Objeto Producto a agregar
+        """
+        try:
+            self.cursor.execute('''
+                INSERT INTO productos (codigo, nombre, cantidad, precio)
+                VALUES (?, ?, ?, ?)
+            ''', (producto.codigo, producto.nombre, producto.cantidad, producto.precio))
+            self.conn.commit()
+            self.productos[producto.codigo] = producto
+        except sqlite3.IntegrityError:
+            raise ValueError("El código de producto ya existe")
 
     def actualizar_producto(self, producto):
         """
-        Actualiza los datos de un producto existente en la base de datos y memoria.
+        Actualiza un producto existente en la base de datos y memoria
+        
+        Args:
+            producto (Producto): Producto con datos actualizados
         """
         self.cursor.execute('''
-            UPDATE producto
+            UPDATE productos 
             SET nombre = ?, cantidad = ?, precio = ?
             WHERE codigo = ?
         ''', (producto.nombre, producto.cantidad, producto.precio, producto.codigo))
         self.conn.commit()
-        
-        # Actualizar en memoria
         self.productos[producto.codigo] = producto
 
     def eliminar_producto(self, codigo):
         """
-        Elimina un producto por código tanto en la base de datos como en memoria.
-        """
-        self.cursor.execute('DELETE FROM producto WHERE codigo = ?', (codigo,))
-        self.conn.commit()
+        Elimina un producto por su código
         
-        # Eliminar de memoria
+        Args:
+            codigo (str): Código del producto a eliminar
+        """
+        self.cursor.execute('DELETE FROM productos WHERE codigo = ?', (codigo,))
+        self.conn.commit()
         self.productos.pop(codigo, None)
 
     def obtener_productos(self):
         """
-        Devuelve una lista con todos los productos en memoria.
+        Retorna lista de todos los productos en el inventario
+        
+        Returns:
+            list: Lista de objetos Producto
         """
         return list(self.productos.values())
 
     def buscar_por_nombre(self, nombre_busqueda):
         """
-        Busca productos cuyo nombre contenga la cadena 'nombre_busqueda' (case insensitive).
+        Busca productos cuyo nombre contenga el texto especificado (case insensitive)
+        
+        Args:
+            nombre_busqueda (str): Texto a buscar en los nombres
+            
+        Returns:
+            list: Lista de productos que coinciden con la búsqueda
         """
         return [
             producto for producto in self.productos.values()
             if nombre_busqueda.lower() in producto.nombre.lower()
         ]
+
+    def __del__(self):
+        """Cierra la conexión a la base de datos cuando el objeto es destruido"""
+        self.conn.close()
