@@ -2,34 +2,32 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Para que sea responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-
-    <!-- Estilos globales -->
+    <!-- Estilos CSS de Amazonía Market -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <!-- Encabezado con logo y navegación -->
     <header>
-        <h1>Mi Sitio Flask</h1>
-
-        <!-- Menú de navegación -->
+        <h1>🛒 Amazonía Market</h1>
         <nav>
-            <!-- Usamos listas para mejor accesibilidad (opcional) -->
-            <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 10px;">
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 20px;">
                 <li><a href="{{ url_for('index') }}">Inicio</a></li>
                 <li><a href="{{ url_for('about') }}">Acerca de</a></li>
-                <li><a href="{{ url_for('mostrar_inventario') }}">Productos</a></li>
+                <li><a href="{{ url_for('mostrar_inventario') }}">Inventario</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Contenido dinámico que se inyecta desde otras plantillas -->
+    <!-- Contenido principal dinámico -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
+    <!-- Pie de página -->
     <footer>
-        <p>© 2025 Mi Proyecto Flask</p>
+        <p>© 2025 Amazonía Market - Tu supermercado de confianza</p>
     </footer>
 </body>
 </html>
