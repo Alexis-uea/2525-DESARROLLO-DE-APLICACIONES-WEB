@@ -1,22 +1,69 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Bienvenido a Amazonía Market</h2>
-    <p>Gestión inteligente de inventario para tu supermercado</p>
-    
-    <!-- Características principales -->
-    <div style="margin: 2em 0;">
-        <h3>¿Qué puedes hacer?</h3>
-        <ul>
-            <li>Gestionar productos del inventario</li>
-            <li>Controlar stock y precios</li>
-            <li>Buscar productos rápidamente</li>
-            <li>Administrar tu negocio eficientemente</li>
-        </ul>
+<!-- Hero Section con logo y mensaje principal -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Amazonía Market Logo" class="logo">
+            <h1>Amazonía Market</h1>
+        </div>
+        <p class="tagline">Tu supermercado de confianza con los mejores precios y calidad garantizada</p>
+        <a href="{{ url_for('mostrar_inventario') }}" class="btn btn-primary">
+            🛒 Comenzar a Gestionar
+        </a>
     </div>
+</section>
 
-    <!-- Botón de acción principal -->
-    <a href="{{ url_for('mostrar_inventario') }}" class="btn">
-        📦 Ver Inventario Completo
-    </a>
+<!-- Sección de características -->
+<section class="features">
+    <h2>¿Por qué elegirnos?</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🌱</div>
+            <h3>Productos Frescos</h3>
+            <p>Ofrecemos la mejor selección de productos frescos directamente de productores locales.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h3>Precios Competitivos</h3>
+            <p>Los mejores precios de la ciudad con ofertas especiales todas las semanas.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🚚</div>
+            <h3>Delivery Gratis</h3>
+            <p>Entregas a domicilio sin costo en compras mayores a $30 en toda la ciudad.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de estadísticas -->
+<section class="stats">
+    <div class="stat-item">
+        <span class="stat-number">15+</span>
+        <span class="stat-label">Años de experiencia</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number">5000+</span>
+        <span class="stat-label">Productos disponibles</span>
+    </div>
+    <div class="stat-item">
+        <span class="stat-number">98%</span>
+        <span class="stat-label">Clientes satisfechos</span>
+    </div>
+</section>
+
+<!-- Llamado a acción -->
+<section class="cta">
+    <h2>¿Listo para optimizar tu gestión?</h2>
+    <p>Comienza ahora a administrar tu inventario de manera eficiente con nuestro sistema</p>
+    <div class="cta-buttons">
+        <a href="{{ url_for('mostrar_inventario') }}" class="btn btn-primary">
+            📦 Gestionar Inventario
+        </a>
+        <a href="{{ url_for('about') }}" class="btn btn-secondary">
+            ℹ️ Conocer Más
+        </a>
+    </div>
+</section>
 {% endblock %}
