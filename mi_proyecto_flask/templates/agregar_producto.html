@@ -1,49 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Agregar Nuevo Producto</h2>
+    <h2>➕ Agregar Nuevo Producto</h2>
 
-    <!-- Formulario para agregar producto -->
     <form method="post">
-        <!-- Token CSRF para seguridad -->
         {{ form.csrf_token }}
 
-        <label for="codigo">Código:</label>
-        {{ form.codigo(size=32) }}
+        <label for="codigo">Código del Producto:</label>
+        {{ form.codigo(size=32, placeholder="Ej: PROD-001") }}
         {% if form.codigo.errors %}
-            <ul>
+            <ul class="errors">
             {% for error in form.codigo.errors %}
-                <li style="color: red;">{{ error }}</li>
+                <li>{{ error }}</li>
             {% endfor %}
             </ul>
         {% endif %}
 
-        <label for="nombre">Nombre:</label>
-        {{ form.nombre(size=64) }}
+        <label for="nombre">Nombre del Producto:</label>
+        {{ form.nombre(size=64, placeholder="Ej: Arroz Diana 1kg") }}
         {% if form.nombre.errors %}
-            <ul>
+            <ul class="errors">
             {% for error in form.nombre.errors %}
-                <li style="color: red;">{{ error }}</li>
+                <li>{{ error }}</li>
             {% endfor %}
             </ul>
         {% endif %}
 
-        <label for="cantidad">Cantidad:</label>
-        {{ form.cantidad() }}
+        <label for="cantidad">Cantidad en Stock:</label>
+        {{ form.cantidad(placeholder="Ej: 50") }}
         {% if form.cantidad.errors %}
-            <ul>
+            <ul class="errors">
             {% for error in form.cantidad.errors %}
-                <li style="color: red;">{{ error }}</li>
+                <li>{{ error }}</li>
             {% endfor %}
             </ul>
         {% endif %}
 
-        <label for="precio">Precio:</label>
-        {{ form.precio() }}
+        <label for="precio">Precio de Venta:</label>
+        {{ form.precio(placeholder="Ej: 2.50") }}
         {% if form.precio.errors %}
-            <ul>
+            <ul class="errors">
             {% for error in form.precio.errors %}
-                <li style="color: red;">{{ error }}</li>
+                <li>{{ error }}</li>
             {% endfor %}
             </ul>
         {% endif %}
@@ -51,9 +49,8 @@
         {{ form.submit() }}
     </form>
 
-    <!-- Botón para regresar al inventario -->
     <br>
     <a href="{{ url_for('mostrar_inventario') }}">
-        <button>Volver al Inventario</button>
+        <button>← Volver al Inventario</button>
     </a>
 {% endblock %}
