@@ -1,58 +1,64 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Inventario</h2>
+    <h2>📦 Inventario de Productos</h2>
 
-    <!-- Formulario para buscar productos por nombre -->
+    <!-- Formulario de búsqueda -->
     <form method="post" class="buscar-form">
-        <!-- Token CSRF necesario para validar el formulario -->
         {{ form.csrf_token }}
-
-        <input type="text" name="nombre" placeholder="Buscar por nombre" required>
+        <input type="text" name="nombre" placeholder="🔍 Buscar producto por nombre..." required>
         <input type="submit" value="Buscar">
-
-        <!-- Botón para mostrar todos los productos sin filtro -->
         <a href="{{ url_for('mostrar_inventario') }}">
-            <button type="button">Ver todos</button>
+            <button type="button">🔄 Ver Todos</button>
         </a>
     </form>
 
-    <!-- Botón para ir a la página de agregar nuevo producto -->
+    <!-- Botón para agregar nuevo producto -->
     <a href="{{ url_for('agregar_producto') }}">
-        <button>Agregar nuevo producto</button>
+        <button>➕ Agregar Nuevo Producto</button>
     </a>
 
     <br><br>
 
-    <!-- Tabla con los productos -->
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Acciones</th>
-        </tr>
+    <!-- Tabla de productos -->
+    {% if productos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td><strong>{{ producto.codigo }}</strong></td>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.cantidad }} unidades</td>
+                    <td>${{ "%.2f"|format(producto.precio) }}</td>
+                    <td>
+                        <!-- Editar producto -->
+                        <a href="{{ url_for('editar_producto', codigo=producto.codigo) }}">
+                            <button>✏️ Editar</button>
+                        </a>
 
-        {% for producto in productos %}
-        <tr>
-            <td>{{ producto.codigo }}</td>
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.cantidad }}</td>
-            <td>${{ "%.2f"|format(producto.precio) }}</td>
-            <td>
-                <!-- Botón para editar -->
-                <a href="{{ url_for('editar_producto', codigo=producto.codigo) }}">
-                    <button>Editar</button>
-                </a>
-
-                <!-- Formulario para eliminar (POST + CSRF) -->
-                <form action="{{ url_for('eliminar_producto', codigo=producto.codigo) }}" method="post" style="display:inline;">
-                    {{ form.csrf_token }}
-                    <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+                        <!-- Eliminar producto -->
+                        <form action="{{ url_for('eliminar_producto', codigo=producto.codigo) }}" method="post" style="display:inline;">
+                            {{ form.csrf_token }}
+                            <button type="submit" onclick="return confirm('¿Eliminar {{ producto.nombre }}?')">🗑️ Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="text-align: center; padding: 2em; color: #666;">
+            No hay productos en el inventario. 
+            <a href="{{ url_for('agregar_producto') }}">Agrega el primero</a>.
+        </p>
+    {% endif %}
 {% endblock %}
