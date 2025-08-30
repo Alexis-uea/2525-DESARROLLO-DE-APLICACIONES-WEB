@@ -1,12 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Página de Inicio</h2>
-    <p>Bienvenido a mi sitio web hecho con Flask y Jinja2.</p>
+    <h2>Bienvenido a Amazonía Market</h2>
+    <p>Gestión inteligente de inventario para tu supermercado</p>
+    
+    <!-- Características principales -->
+    <div style="margin: 2em 0;">
+        <h3>¿Qué puedes hacer?</h3>
+        <ul>
+            <li>Gestionar productos del inventario</li>
+            <li>Controlar stock y precios</li>
+            <li>Buscar productos rápidamente</li>
+            <li>Administrar tu negocio eficientemente</li>
+        </ul>
+    </div>
 
-    <!-- Botón que redirige al inventario.
-         Nota: usar <a> con clase de botón es más accesible que un <button> dentro de <a> -->
+    <!-- Botón de acción principal -->
     <a href="{{ url_for('mostrar_inventario') }}" class="btn">
-        Ir al Inventario
+        📦 Ver Inventario Completo
     </a>
 {% endblock %}
