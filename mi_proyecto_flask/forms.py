@@ -1,46 +1,66 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DecimalField, SubmitField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, NumberRange, Length
 
-# Formulario para agregar un nuevo producto
 class ProductoForm(FlaskForm):
-    # Código del producto: campo de texto obligatorio
-    codigo = StringField('Código', validators=[DataRequired(message="El código es obligatorio")])
+    """
+    Formulario para agregar nuevos productos a Amazonía Market
+    Incluye validaciones para todos los campos requeridos
+    """
+    # Código de producto (único, obligatorio)
+    codigo = StringField('Código de Producto', 
+                        validators=[
+                            DataRequired(message="El código del producto es obligatorio"),
+                            Length(min=3, max=20, message="El código debe tener entre 3 y 20 caracteres")
+                        ])
     
-    # Nombre del producto: campo de texto obligatorio
-    nombre = StringField('Nombre', validators=[DataRequired(message="El nombre es obligatorio")])
+    # Nombre del producto (obligatorio)
+    nombre = StringField('Nombre del Producto', 
+                        validators=[
+                            DataRequired(message="El nombre del producto es obligatorio"),
+                            Length(min=2, max=100, message="El nombre debe tener entre 2 y 100 caracteres")
+                        ])
     
-    # Cantidad: campo numérico entero, obligatorio y al menos 0 (puedes cambiar a 1 si prefieres)
-    cantidad = IntegerField('Cantidad', validators=[
-        DataRequired(message="La cantidad es obligatoria"),
-        NumberRange(min=0, message="La cantidad debe ser cero o mayor")
-    ])
+    # Cantidad en stock (entero positivo)
+    cantidad = IntegerField('Cantidad en Stock', 
+                           validators=[
+                               DataRequired(message="La cantidad es obligatoria"),
+                               NumberRange(min=0, message="La cantidad no puede ser negativa")
+                           ])
     
-    # Precio: campo decimal con 2 decimales, obligatorio y mínimo 0
-    precio = DecimalField('Precio', places=2, validators=[
-        DataRequired(message="El precio es obligatorio"),
-        NumberRange(min=0, message="El precio debe ser cero o mayor")
-    ])
+    # Precio (decimal positivo)
+    precio = DecimalField('Precio ($)', 
+                         places=2,
+                         validators=[
+                             DataRequired(message="El precio es obligatorio"),
+                             NumberRange(min=0, message="El precio no puede ser negativo")
+                         ])
     
-    # Botón para enviar el formulario
-    submit = SubmitField('Agregar')
+    # Botón de submit
+    submit = SubmitField('Agregar Producto')
 
-# Formulario para editar producto (no se edita el código)
 class EditarProductoForm(FlaskForm):
-    # Nombre del producto (editable)
-    nombre = StringField('Nombre', validators=[DataRequired(message="El nombre es obligatorio")])
+    """
+    Formulario para editar productos existentes
+    No incluye el campo código (no editable)
+    """
+    nombre = StringField('Nombre del Producto', 
+                        validators=[
+                            DataRequired(message="El nombre del producto es obligatorio"),
+                            Length(min=2, max=100, message="El nombre debe tener entre 2 y 100 caracteres")
+                        ])
     
-    # Cantidad editable, con misma validación que arriba
-    cantidad = IntegerField('Cantidad', validators=[
-        DataRequired(message="La cantidad es obligatoria"),
-        NumberRange(min=0, message="La cantidad debe ser cero o mayor")
-    ])
+    cantidad = IntegerField('Cantidad en Stock', 
+                           validators=[
+                               DataRequired(message="La cantidad es obligatoria"),
+                               NumberRange(min=0, message="La cantidad no puede ser negativa")
+                           ])
     
-    # Precio editable
-    precio = DecimalField('Precio', places=2, validators=[
-        DataRequired(message="El precio es obligatorio"),
-        NumberRange(min=0, message="El precio debe ser cero o mayor")
-    ])
+    precio = DecimalField('Precio ($)', 
+                         places=2,
+                         validators=[
+                             DataRequired(message="El precio es obligatorio"),
+                             NumberRange(min=0, message="El precio no puede ser negativo")
+                         ])
     
-    # Botón para enviar el formulario
-    submit = SubmitField('Guardar cambios')
+    submit = SubmitField('Guardar Cambios')
