@@ -1,69 +1,34 @@
-{% extends 'base.html' %}
+{% extends "layout.html" %}
+
+{% block title %}Inicio - Amazonia Market{% endblock %}
 
 {% block content %}
-<!-- Hero Section con logo y mensaje principal -->
-<section class="hero">
-    <div class="hero-content">
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Amazonía Market Logo" class="logo">
-            <h1>Amazonía Market</h1>
-        </div>
-        <p class="tagline">Tu supermercado de confianza con los mejores precios y calidad garantizada</p>
-        <a href="{{ url_for('mostrar_inventario') }}" class="btn btn-primary">
-            🛒 Comenzar a Gestionar
-        </a>
-    </div>
-</section>
+<div class="text-center">
+    <h1 class="mb-4">Bienvenido a Amazonia Market</h1>
+    <p class="lead">Tu supermercado online confiable, rápido y con productos frescos a un clic de distancia.</p>
+    <img src="{{ url_for('static', filename='images/logo.png') }}" class="img-fluid rounded shadow mb-4" alt="Logo Amazonia Market" style="max-width: 400px;">
 
-<!-- Sección de características -->
-<section class="features">
-    <h2>¿Por qué elegirnos?</h2>
-    <div class="feature-grid">
-        <div class="feature-card">
-            <div class="feature-icon">🌱</div>
-            <h3>Productos Frescos</h3>
-            <p>Ofrecemos la mejor selección de productos frescos directamente de productores locales.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">💰</div>
-            <h3>Precios Competitivos</h3>
-            <p>Los mejores precios de la ciudad con ofertas especiales todas las semanas.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">🚚</div>
-            <h3>Delivery Gratis</h3>
-            <p>Entregas a domicilio sin costo en compras mayores a $30 en toda la ciudad.</p>
-        </div>
-    </div>
-</section>
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-start">
+            <h3>¿Por qué elegir Amazonia Market?</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">🛒 Amplia variedad de productos frescos y de calidad.</li>
+                <li class="list-group-item">🚚 Entregas rápidas y seguras en tu domicilio.</li>
+                <li class="list-group-item">💳 Métodos de pago fáciles y seguros.</li>
+                <li class="list-group-item">🌿 Comprometidos con el medio ambiente y productos sostenibles.</li>
+            </ul>
 
-<!-- Sección de estadísticas -->
-<section class="stats">
-    <div class="stat-item">
-        <span class="stat-number">15+</span>
-        <span class="stat-label">Años de experiencia</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-number">5000+</span>
-        <span class="stat-label">Productos disponibles</span>
-    </div>
-    <div class="stat-item">
-        <span class="stat-number">98%</span>
-        <span class="stat-label">Clientes satisfechos</span>
-    </div>
-</section>
+            <h3 class="mt-4">¿Qué puedes hacer en nuestra plataforma?</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">📋 Completa el formulario para registrarte y recibir ofertas exclusivas.</li>
+                <li class="list-group-item">📂 Consulta tus datos guardados en formatos fáciles de usar.</li>
+                <li class="list-group-item">📊 Visualiza tus compras y datos en tablas claras y ordenadas.</li>
+            </ul>
 
-<!-- Llamado a acción -->
-<section class="cta">
-    <h2>¿Listo para optimizar tu gestión?</h2>
-    <p>Comienza ahora a administrar tu inventario de manera eficiente con nuestro sistema</p>
-    <div class="cta-buttons">
-        <a href="{{ url_for('mostrar_inventario') }}" class="btn btn-primary">
-            📦 Gestionar Inventario
-        </a>
-        <a href="{{ url_for('about') }}" class="btn btn-secondary">
-            ℹ️ Conocer Más
-        </a>
+            <p class="mt-4">Comienza ahora navegando a nuestro formulario para registrarte o explorar nuestros datos.</p>
+            <a href="{{ url_for('formulario') }}" class="btn btn-success btn-lg me-2">Ir al Formulario</a>
+            <a href="{{ url_for('leer_txt') }}" class="btn btn-outline-primary btn-lg">Ver Datos Guardados</a>
+        </div>
     </div>
-</section>
+</div>
 {% endblock %}

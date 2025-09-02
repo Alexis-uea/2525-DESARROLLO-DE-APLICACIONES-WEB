@@ -1,111 +1,132 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_wtf.csrf import CSRFProtect
-from forms import ProductoForm, EditarProductoForm
-from inventario import Inventario
-from producto import Producto
 import os
+import json
+import csv
+from flask_sqlalchemy import SQLAlchemy
 
-# Inicialización de la aplicación Flask para Amazonía Market
 app = Flask(__name__)
 
-# Configuración de clave secreta (en producción usar variables de entorno)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'clave-secreta-amazonia-market-2025')
+# Ruta base absoluta para manejar archivos sin errores
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Protección CSRF para toda la aplicación
-csrf = CSRFProtect(app)
+# Crear carpetas necesarias para almacenar datos y base de datos
+os.makedirs(os.path.join(basedir, 'database'), exist_ok=True)
+os.makedirs(os.path.join(basedir, 'datos'), exist_ok=True)
 
-# Instancia del inventario (gestión de productos)
-inventario = Inventario()
+# Configuración base de datos SQLite (ruta absoluta)
+db_path = os.path.join(basedir, 'database', 'usuarios.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Ruta principal - Página de inicio
+db = SQLAlchemy(app)
+
+# Modelo Usuario para la base de datos
+class Usuario(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    edad = db.Column(db.Integer, nullable=False)
+
+# Crear tablas al iniciar la app
+with app.app_context():
+    db.create_all()
+
+# Página principal
 @app.route('/')
 def index():
-    """Muestra la página principal de Amazonía Market"""
-    return render_template('index.html', title='Inicio - Amazonía Market')
+    return render_template('index.html')
 
-# Ruta Acerca de - Información del supermercado
-@app.route('/about')
-def about():
-    """Muestra la página 'Acerca de' con información del supermercado"""
-    return render_template('about.html', title='Acerca de - Amazonía Market')
+# Mostrar formulario para ingreso de datos
+@app.route('/formulario')
+def formulario():
+    return render_template('formulario.html')
 
-# Ruta Inventario - Gestión de productos
-@app.route('/inventario', methods=['GET', 'POST'])
-def mostrar_inventario():
-    """
-    Muestra el inventario de productos con funcionalidad de búsqueda.
-    POST: Busca productos por nombre
-    GET: Muestra todos los productos
-    """
-    form = ProductoForm()  # Formulario para CSRF token
-    productos = []
+# Recibir datos del formulario y guardarlos en TXT, JSON, CSV y SQLite
+@app.route('/guardar_datos', methods=['POST'])
+def guardar_datos():
+    nombre = request.form['nombre']
+    edad = request.form['edad']
 
-    if request.method == 'POST':
-        # Búsqueda por nombre (case insensitive)
-        nombre_busqueda = request.form.get('nombre', '').strip()
-        if nombre_busqueda:
-            productos = inventario.buscar_por_nombre(nombre_busqueda)
-        else:
-            productos = inventario.obtener_productos()
+    # Guardar en TXT
+    txt_path = os.path.join(basedir, 'datos', 'datos.txt')
+    with open(txt_path, 'a', encoding='utf-8') as f:
+        f.write(f"{nombre},{edad}\n")
+
+    # Guardar en JSON
+    json_path = os.path.join(basedir, 'datos', 'datos.json')
+    if os.path.exists(json_path):
+        with open(json_path, 'r', encoding='utf-8') as f:
+            try:
+                datos_json = json.load(f)
+            except json.JSONDecodeError:
+                datos_json = []
     else:
-        productos = inventario.obtener_productos()
+        datos_json = []
 
-    return render_template('inventario.html', 
-                         title='Inventario - Amazonía Market', 
-                         productos=productos, 
-                         form=form)
+    datos_json.append({'nombre': nombre, 'edad': edad})
+    with open(json_path, 'w', encoding='utf-8') as f:
+        json.dump(datos_json, f, indent=4, ensure_ascii=False)
 
-# Ruta Agregar Producto - Formulario de nuevo producto
-@app.route('/agregar', methods=['GET', 'POST'])
-def agregar_producto():
-    """Maneja el formulario para agregar nuevos productos al inventario"""
-    form = ProductoForm()
+    # Guardar en CSV
+    csv_path = os.path.join(basedir, 'datos', 'datos.csv')
+    write_header = not os.path.exists(csv_path)
+    with open(csv_path, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        if write_header:
+            writer.writerow(['nombre', 'edad'])
+        writer.writerow([nombre, edad])
 
-    if form.validate_on_submit():
-        # Crear nuevo producto con datos del formulario
-        nuevo_producto = Producto(
-            codigo=form.codigo.data.strip(),
-            nombre=form.nombre.data.strip(),
-            cantidad=form.cantidad.data,
-            precio=float(form.precio.data)
-        )
-        inventario.agregar_producto(nuevo_producto)
-        return redirect(url_for('mostrar_inventario'))
+    # Guardar en SQLite
+    usuario = Usuario(nombre=nombre, edad=int(edad))
+    db.session.add(usuario)
+    db.session.commit()
 
-    return render_template('agregar_producto.html', 
-                         title='Agregar Producto - Amazonía Market', 
-                         form=form)
+    # Redirigir a página de éxito sin datos (muestra mensaje)
+    return redirect(url_for('resultado'))
 
-# Ruta Editar Producto - Formulario de edición
-@app.route('/editar/<codigo>', methods=['GET', 'POST'])
-def editar_producto(codigo):
-    """Maneja la edición de productos existentes"""
-    producto = inventario.productos.get(codigo)
-    if not producto:
-        return "Producto no encontrado", 404
+# Mostrar mensaje de éxito tras guardar datos
+@app.route('/resultado')
+def resultado():
+    return render_template('resultados.html', datos=None, tipo=None)
 
-    form = EditarProductoForm(obj=producto)
+# Leer y mostrar datos desde TXT
+@app.route('/leer_txt')
+def leer_txt():
+    txt_path = os.path.join(basedir, 'datos', 'datos.txt')
+    try:
+        with open(txt_path, 'r', encoding='utf-8') as f:
+            datos = f.readlines()
+    except FileNotFoundError:
+        datos = ["Archivo TXT no encontrado."]
+    return render_template('resultados.html', datos=datos, tipo='TXT')
 
-    if form.validate_on_submit():
-        # Actualizar producto con nuevos datos
-        producto.nombre = form.nombre.data.strip()
-        producto.cantidad = form.cantidad.data
-        producto.precio = float(form.precio.data)
-        inventario.actualizar_producto(producto)
-        return redirect(url_for('mostrar_inventario'))
+# Leer y mostrar datos desde JSON
+@app.route('/leer_json')
+def leer_json():
+    json_path = os.path.join(basedir, 'datos', 'datos.json')
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            datos = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        datos = [{"nombre": "Archivo JSON no encontrado o vacío.", "edad": ""}]
+    return render_template('resultados.html', datos=datos, tipo='JSON')
 
-    return render_template('editar_producto.html', 
-                         title='Editar Producto - Amazonía Market', 
-                         form=form, 
-                         producto=producto)
+# Leer y mostrar datos desde CSV
+@app.route('/leer_csv')
+def leer_csv():
+    csv_path = os.path.join(basedir, 'datos', 'datos.csv')
+    try:
+        with open(csv_path, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            datos = list(reader)
+    except FileNotFoundError:
+        datos = [["Archivo CSV no encontrado."]]
+    return render_template('resultados.html', datos=datos, tipo='CSV')
 
-# Ruta Eliminar Producto - Eliminación segura (POST only)
-@app.route('/eliminar/<codigo>', methods=['POST'])
-def eliminar_producto(codigo):
-    """Elimina un producto del inventario (solo por POST)"""
-    inventario.eliminar_producto(codigo)
-    return redirect(url_for('mostrar_inventario'))
+# Leer y mostrar datos desde SQLite
+@app.route('/leer_sqlite')
+def leer_sqlite():
+    usuarios = Usuario.query.all()
+    return render_template('resultados.html', datos=usuarios, tipo='SQLite')
 
-# Punto de entrada de la aplicación
 if __name__ == '__main__':
     app.run(debug=True)
