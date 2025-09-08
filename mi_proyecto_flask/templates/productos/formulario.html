@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Nuevo producto' if modo=='crear' else 'Editar producto' }}{% endblock %}
+
+{% block content %}
+<h1>Fromulario de creación de producto </h1>
+<h1>{{ 'Nuevo producto' if modo=='crear' else 'Editar producto' }}</h1>
+
+<form method="post" novalidate class="form-card">
+  {{ form.hidden_tag() }}
+
+  <div class="form-group">
+    <label>{{ form.nombre.label }}</label>
+    {{ form.nombre(class="input") }}
+    {% for e in form.nombre.errors %}<small class="error">{{ e }}</small>{% endfor %}
+  </div>
+
+  <div class="form-group">
+    <label>{{ form.cantidad.label }}</label>
+    {{ form.cantidad(class="input") }}
+    {% for e in form.cantidad.errors %}<small class="error">{{ e }}</small>{% endfor %}
+  </div>
+
+  <div class="form-group">
+    <label>{{ form.precio.label }}</label>
+    {{ form.precio(class="input") }}
+    {% for e in form.precio.errors %}<small class="error">{{ e }}</small>{% endfor %}
+  </div>
+
+  <div class="form-actions">
+    {{ form.submit(class="btn btn-primary") }}
+    <a class="btn btn-secondary" href="{{ url_for('listar_productos') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

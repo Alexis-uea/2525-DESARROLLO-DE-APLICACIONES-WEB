@@ -1,34 +1,8 @@
-{% extends "layout.html" %}
-
-{% block title %}Inicio - Amazonia Market{% endblock %}
+{% extends "base.html"%}
+{% block title %}Inicio{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="mb-4">Bienvenido a Amazonia Market</h1>
-    <p class="lead">Tu supermercado online confiable, rápido y con productos frescos a un clic de distancia.</p>
-    <img src="{{ url_for('static', filename='images/logo.png') }}" class="img-fluid rounded shadow mb-4" alt="Logo Amazonia Market" style="max-width: 400px;">
-
-    <div class="row justify-content-center">
-        <div class="col-md-8 text-start">
-            <h3>¿Por qué elegir Amazonia Market?</h3>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">🛒 Amplia variedad de productos frescos y de calidad.</li>
-                <li class="list-group-item">🚚 Entregas rápidas y seguras en tu domicilio.</li>
-                <li class="list-group-item">💳 Métodos de pago fáciles y seguros.</li>
-                <li class="list-group-item">🌿 Comprometidos con el medio ambiente y productos sostenibles.</li>
-            </ul>
-
-            <h3 class="mt-4">¿Qué puedes hacer en nuestra plataforma?</h3>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">📋 Completa el formulario para registrarte y recibir ofertas exclusivas.</li>
-                <li class="list-group-item">📂 Consulta tus datos guardados en formatos fáciles de usar.</li>
-                <li class="list-group-item">📊 Visualiza tus compras y datos en tablas claras y ordenadas.</li>
-            </ul>
-
-            <p class="mt-4">Comienza ahora navegando a nuestro formulario para registrarte o explorar nuestros datos.</p>
-            <a href="{{ url_for('formulario') }}" class="btn btn-success btn-lg me-2">Ir al Formulario</a>
-            <a href="{{ url_for('leer_txt') }}" class="btn btn-outline-primary btn-lg">Ver Datos Guardados</a>
-        </div>
-    </div>
-</div>
+<h1>Bienvenido a mi sitio Flask</h1>
+<p>Esta es la página de inicio de mi aplicación Flask.</p>
+<p>Utiliza el menú de navegación para explorar más.</p>
 {% endblock %}

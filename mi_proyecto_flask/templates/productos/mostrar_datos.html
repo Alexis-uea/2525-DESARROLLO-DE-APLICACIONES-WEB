@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Productos desde {{ formato }}</title>
+</head>
+<body>
+  <h1>Productos cargados desde {{ formato }}</h1>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for producto in productos %}
+      <tr>
+        <td>{{ producto['id'] }}</td>
+        <td>{{ producto['nombre'] }}</td>
+        <td>{{ producto['cantidad'] }}</td>
+        <td>{{ producto['precio'] }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No hay productos para mostrar.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p><a href="{{ url_for('listar_productos') }}">Volver a lista de productos</a></p>
+</body>
+</html>

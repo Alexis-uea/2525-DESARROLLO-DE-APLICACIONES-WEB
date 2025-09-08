@@ -1,132 +1,245 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash, request
+from datetime import datetime
+from modelos import db, Producto, Cliente
+from formularios import ProductoForm, ClienteForm
+from inventario import Inventario
+from persistencia import (
+    guardar_productos_txt, leer_productos_txt,
+    guardar_productos_json, leer_productos_json,
+    guardar_productos_csv, leer_productos_csv
+)
+from sqlalchemy.exc import IntegrityError
 import os
-import json
-import csv
-from flask_sqlalchemy import SQLAlchemy
+
+# ---------------------------------------------
+# Configuración de la aplicación Flask
+# ---------------------------------------------
 
 app = Flask(__name__)
 
-# Ruta base absoluta para manejar archivos sin errores
+# Define la ruta base del proyecto
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# Crear carpetas necesarias para almacenar datos y base de datos
-os.makedirs(os.path.join(basedir, 'database'), exist_ok=True)
-os.makedirs(os.path.join(basedir, 'datos'), exist_ok=True)
-
-# Configuración base de datos SQLite (ruta absoluta)
-db_path = os.path.join(basedir, 'database', 'usuarios.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+# Configuración de la base de datos SQLite en la carpeta 'instance'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'instance', 'inventario.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# Clave secreta para formularios y sesiones (¡cambiar en producción!)
+app.config['SECRET_KEY'] = 'dev-secret-key'
 
-# Modelo Usuario para la base de datos
-class Usuario(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(100), nullable=False)
-    edad = db.Column(db.Integer, nullable=False)
+# Inicializa SQLAlchemy con la app
+db.init_app(app)
 
-# Crear tablas al iniciar la app
+# Context processor para tener acceso a la hora actual en los templates
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
+
+# Crea las tablas y carga inventario desde BD al iniciar
 with app.app_context():
     db.create_all()
+    inventario = Inventario.cargar_desde_bd()
 
-# Página principal
+
+# ---------------------------------------------
+# Rutas de la aplicación
+# ---------------------------------------------
+
+# Página de inicio
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', title='Inicio')
 
-# Mostrar formulario para ingreso de datos
-@app.route('/formulario')
-def formulario():
-    return render_template('formulario.html')
+# Página con opciones para leer/guardar archivos
+@app.route('/leer-datos')
+def leer_datos():
+    return render_template('leer_datos.html', title='Leer datos')
 
-# Recibir datos del formulario y guardarlos en TXT, JSON, CSV y SQLite
-@app.route('/guardar_datos', methods=['POST'])
-def guardar_datos():
-    nombre = request.form['nombre']
-    edad = request.form['edad']
+# Página de bienvenida simple
+@app.route('/usuario/<nombre>')
+def usuario(nombre):
+    return f'Bienvenido, {nombre}!'
 
-    # Guardar en TXT
-    txt_path = os.path.join(basedir, 'datos', 'datos.txt')
-    with open(txt_path, 'a', encoding='utf-8') as f:
-        f.write(f"{nombre},{edad}\n")
+# Página "Acerca de"
+@app.route('/about/')
+def about():
+    return render_template('about.html', title='Acerca de')
 
-    # Guardar en JSON
-    json_path = os.path.join(basedir, 'datos', 'datos.json')
-    if os.path.exists(json_path):
-        with open(json_path, 'r', encoding='utf-8') as f:
-            try:
-                datos_json = json.load(f)
-            except json.JSONDecodeError:
-                datos_json = []
-    else:
-        datos_json = []
 
-    datos_json.append({'nombre': nombre, 'edad': edad})
-    with open(json_path, 'w', encoding='utf-8') as f:
-        json.dump(datos_json, f, indent=4, ensure_ascii=False)
+# ---------------------------------------------
+# Gestión de Productos
+# ---------------------------------------------
 
-    # Guardar en CSV
-    csv_path = os.path.join(basedir, 'datos', 'datos.csv')
-    write_header = not os.path.exists(csv_path)
-    with open(csv_path, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        if write_header:
-            writer.writerow(['nombre', 'edad'])
-        writer.writerow([nombre, edad])
+@app.route('/productos')
+def listar_productos():
+    q = request.args.get('q', '').strip()
+    productos = inventario.buscar_por_nombre(q) if q else inventario.listar_todos()
+    return render_template('productos/lista.html', title='Productos', productos=productos, q=q)
 
-    # Guardar en SQLite
-    usuario = Usuario(nombre=nombre, edad=int(edad))
-    db.session.add(usuario)
-    db.session.commit()
+@app.route('/productos/nuevo', methods=['GET', 'POST'])
+def crear_producto():
+    form = ProductoForm()
+    if form.validate_on_submit():
+        try:
+            inventario.agregar(
+                nombre=form.nombre.data.strip(),
+                cantidad=form.cantidad.data,
+                precio=form.precio.data
+            )
+            flash('Producto agregado correctamente.', 'success')
+            return redirect(url_for('listar_productos'))
+        except ValueError as e:
+            form.nombre.errors.append(str(e))
+    return render_template('productos/formulario.html', title='Nuevo producto', form=form, modo='crear')
 
-    # Redirigir a página de éxito sin datos (muestra mensaje)
-    return redirect(url_for('resultado'))
+@app.route('/productos/<int:pid>/editar', methods=['GET', 'POST'])
+def editar_producto(pid):
+    producto = Producto.query.get_or_404(pid)
+    form = ProductoForm(obj=producto)
+    if form.validate_on_submit():
+        try:
+            inventario.actualizar(
+                id=pid,
+                nombre=form.nombre.data.strip(),
+                cantidad=form.cantidad.data,
+                precio=form.precio.data
+            )
+            flash('Producto actualizado.', 'success')
+            return redirect(url_for('listar_productos'))
+        except ValueError as e:
+            form.nombre.errors.append(str(e))
+    return render_template('productos/formulario.html', title='Editar producto', form=form, modo='editar')
 
-# Mostrar mensaje de éxito tras guardar datos
-@app.route('/resultado')
-def resultado():
-    return render_template('resultados.html', datos=None, tipo=None)
+@app.route('/productos/<int:pid>/eliminar', methods=['POST'])
+def eliminar_producto(pid):
+    ok = inventario.eliminar(pid)
+    flash('Producto eliminado.' if ok else 'Producto no encontrado.', 'info' if ok else 'warning')
+    return redirect(url_for('listar_productos'))
 
-# Leer y mostrar datos desde TXT
-@app.route('/leer_txt')
-def leer_txt():
-    txt_path = os.path.join(basedir, 'datos', 'datos.txt')
+
+# ---------------------------------------------
+# Gestión de Clientes
+# ---------------------------------------------
+
+@app.route('/clientes')
+def listar_clientes():
+    clientes = Cliente.query.order_by(Cliente.nombre).all()
+    return render_template('clientes/lista.html', title='Clientes', clientes=clientes)
+
+@app.route('/clientes/nuevo', methods=['GET', 'POST'])
+def crear_cliente():
+    form = ClienteForm()
+    if form.validate_on_submit():
+        nuevo_cliente = Cliente(
+            nombre=form.nombre.data.strip(),
+            direccion=form.direccion.data.strip(),
+            correo_electronico=form.correo_electronico.data.strip()
+        )
+        db.session.add(nuevo_cliente)
+        try:
+            db.session.commit()
+            flash('Cliente agregado correctamente.', 'success')
+            return redirect(url_for('listar_clientes'))
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error: el correo electrónico ya existe.', 'danger')
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error inesperado: {str(e)}', 'danger')
+    return render_template('clientes/formulario.html', title='Nuevo cliente', form=form, modo='crear')
+
+@app.route('/clientes/<int:cid>/editar', methods=['GET', 'POST'])
+def editar_cliente(cid):
+    cliente = Cliente.query.get_or_404(cid)
+    form = ClienteForm(obj=cliente)
+    if form.validate_on_submit():
+        cliente.nombre = form.nombre.data.strip()
+        cliente.direccion = form.direccion.data.strip()
+        cliente.correo_electronico = form.correo_electronico.data.strip()
+        try:
+            db.session.commit()
+            flash('Cliente actualizado correctamente.', 'success')
+            return redirect(url_for('listar_clientes'))
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error: el correo electrónico ya existe.', 'danger')
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error inesperado: {str(e)}', 'danger')
+    return render_template('clientes/formulario.html', title='Editar cliente', form=form, modo='editar')
+
+
+# ---------------------------------------------
+# Guardar productos en archivos (TXT, JSON, CSV)
+# ---------------------------------------------
+
+@app.route('/productos/txt/guardar', methods=['POST'])
+def guardar_txt():
+    productos = [p.to_dict() for p in Producto.query.all()]
+    guardar_productos_txt(productos)
+    flash('Productos guardados en TXT', 'success')
+    return redirect(url_for('listar_productos'))
+
+@app.route('/productos/json/guardar', methods=['POST'])
+def guardar_json():
+    productos = [p.to_dict() for p in Producto.query.all()]
+    guardar_productos_json(productos)
+    flash('Productos guardados en JSON', 'success')
+    return redirect(url_for('listar_productos'))
+
+@app.route('/productos/csv/guardar', methods=['POST'])
+def guardar_csv():
+    productos = [p.to_dict() for p in Producto.query.all()]
+    guardar_productos_csv(productos)
+    flash('Productos guardados en CSV', 'success')
+    return redirect(url_for('listar_productos'))
+
+
+# ---------------------------------------------
+# Mostrar contenido crudo de archivos
+# ---------------------------------------------
+
+def leer_archivo_como_html(ruta, tipo):
     try:
-        with open(txt_path, 'r', encoding='utf-8') as f:
-            datos = f.readlines()
+        with open(ruta, 'r', encoding='utf-8') as f:
+            contenido = f.read()
     except FileNotFoundError:
-        datos = ["Archivo TXT no encontrado."]
-    return render_template('resultados.html', datos=datos, tipo='TXT')
+        contenido = f"⚠️ Archivo {os.path.basename(ruta)} no encontrado."
 
-# Leer y mostrar datos desde JSON
-@app.route('/leer_json')
-def leer_json():
-    json_path = os.path.join(basedir, 'datos', 'datos.json')
-    try:
-        with open(json_path, 'r', encoding='utf-8') as f:
-            datos = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        datos = [{"nombre": "Archivo JSON no encontrado o vacío.", "edad": ""}]
-    return render_template('resultados.html', datos=datos, tipo='JSON')
+    return f"""
+    <html>
+        <head>
+            <title>Contenido {tipo.upper()}</title>
+            <meta charset="UTF-8">
+        </head>
+        <body>
+            <h1>📄 Contenido crudo desde archivo {tipo.upper()}</h1>
+            <pre style="background:#f9f9f9; padding:1em; border:1px solid #ccc;">{contenido}</pre>
+            <p><a href="{url_for('leer_datos')}">⬅️ Volver</a></p>
+        </body>
+    </html>
+    """
 
-# Leer y mostrar datos desde CSV
-@app.route('/leer_csv')
-def leer_csv():
-    csv_path = os.path.join(basedir, 'datos', 'datos.csv')
-    try:
-        with open(csv_path, 'r', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            datos = list(reader)
-    except FileNotFoundError:
-        datos = [["Archivo CSV no encontrado."]]
-    return render_template('resultados.html', datos=datos, tipo='CSV')
+@app.route('/productos/txt/cargar')
+def cargar_txt():
+    ruta = os.path.join(basedir, 'instance', 'productos.txt')
+    return leer_archivo_como_html(ruta, 'txt')
 
-# Leer y mostrar datos desde SQLite
-@app.route('/leer_sqlite')
-def leer_sqlite():
-    usuarios = Usuario.query.all()
-    return render_template('resultados.html', datos=usuarios, tipo='SQLite')
+@app.route('/productos/json/cargar')
+def cargar_json():
+    ruta = os.path.join(basedir, 'instance', 'productos.json')
+    return leer_archivo_como_html(ruta, 'json')
+
+@app.route('/productos/csv/cargar')
+def cargar_csv():
+    ruta = os.path.join(basedir, 'instance', 'productos.csv')
+    return leer_archivo_como_html(ruta, 'csv')
+
+
+# ---------------------------------------------
+# Ejecutar la aplicación
+# ---------------------------------------------
 
 if __name__ == '__main__':
     app.run(debug=True)
+# Nota: En producción, usar un servidor WSGI como Gunicorn o uWSGI

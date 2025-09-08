@@ -1,130 +1,37 @@
-/* ===== Estilos base ===== */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f8ff; /* Azul muy suave */
-    color: #333;
-    margin: 0;
-    padding: 20px;
-}
+:root { --bg:#0f172a; --fg:#e2e8f0; --muted:#94a3b8; --brand:#2563eb; --ok:#16a34a; --warn:#f59e0b; --danger:#dc2626; --card:#111827; }
 
-/* ===== Header y Footer ===== */
-header, footer {
-    background-color: #2d6a4f; /* Verde bosque */
-    color: white;
-    padding: 15px 10px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-}
+* { box-sizing: border-box; }
+body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#0b1020; color:var(--fg); }
 
-/* ===== Navegación ===== */
-nav {
-    margin-top: 10px;
-}
+.site-header { background:var(--bg); border-bottom:1px solid #223; position:sticky; top:0; z-index:10; }
+.nav { display:flex; gap:1rem; align-items:center; padding:0.9rem 1.2rem; }
+.nav a { color:var(--fg); text-decoration:none; opacity:.9; }
+.nav a:hover { opacity:1; text-decoration:underline; }
 
-nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
+.container { max-width:900px; margin:2rem auto; padding:0 1rem; }
 
-nav a:hover {
-    color: #95d5b2; /* Verde claro hover */
-}
+.table { width:100%; border-collapse: collapse; margin-top:1rem; background:var(--card); border:1px solid #223; }
+.table th, .table td { padding:.75rem; border-bottom:1px solid #223; text-align:left; }
+.table th { color:#cbd5e1; font-weight:600; background:#0e152b; }
 
-/* ===== Contenedor principal ===== */
-main {
-    margin-top: 30px;
-}
+.form-inline { display:flex; gap:.5rem; flex-wrap:wrap; margin:.5rem 0 1rem; }
+.input, input[type="text"], input[type="number"] { width:100%; padding:.6rem .7rem; background:#0e152b; color:var(--fg); border:1px solid #223; border-radius:.5rem; }
+.form-card { max-width:520px; background:var(--card); padding:1rem; border:1px solid #223; border-radius:.8rem; }
+.form-group { margin-bottom:.9rem; }
+.error { color:#fca5a5; display:block; margin-top:.25rem; }
 
-/* ===== Botones ===== */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s ease;
-    text-align: center;
-    text-decoration: none;
-    color: white;
-}
+.btn { display:inline-block; padding:.5rem .8rem; border-radius:.5rem; border:1px solid #223; background:#0e152b; color:var(--fg); text-decoration:none; cursor:pointer; }
+.btn:hover { filter:brightness(1.1); }
+.btn-primary { background:var(--brand); border-color:transparent; }
+.btn-secondary { background:#334155; }
+.btn-danger { background:var(--danger); border-color:transparent; }
+.btn-small { padding:.35rem .55rem; font-size:.9rem; }
 
-.btn-primary {
-    background-color: #40916c;
-}
+.flash-container { margin:1rem 0; display:grid; gap:.5rem; }
+.flash { padding:.6rem .8rem; border-radius:.5rem; border:1px solid #223; background:#0e152b; }
+.flash.success { border-color:#14532d; background:#052e18; }
+.flash.info { border-color:#0e2a52; background:#06162b; }
+.flash.warning { border-color:#513c0b; background:#2b1c06; }
 
-.btn-primary:hover {
-    background-color: #2d6a4f;
-}
-
-.btn-secondary {
-    background-color: #95d5b2;
-    color: #2d6a4f;
-}
-
-.btn-secondary:hover {
-    background-color: #2d6a4f;
-    color: white;
-}
-
-/* ===== Listas ===== */
-.list-group-item {
-    border: none;
-    padding-left: 0;
-    font-size: 1.1rem;
-    color: #1b4332;
-}
-
-/* ===== Tablas ===== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th, td {
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    text-align: left;
-}
-
-thead {
-    background-color: #40916c;
-    color: white;
-}
-
-/* ===== Encabezados ===== */
-h1, h2, h3 {
-    color: #1b4332;
-}
-
-/* ===== Imágenes ===== */
-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 576px) {
-    body {
-        padding: 10px;
-    }
-    nav a {
-        margin: 0 8px;
-        font-size: 0.9rem;
-    }
-    .btn {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-    }
-    table, th, td {
-        font-size: 0.9rem;
-    }
-}
+.site-footer { text-align:center; padding:1.2rem; border-top:1px solid #223; color:var(--muted); }
+.acciones { white-space:nowrap; }
