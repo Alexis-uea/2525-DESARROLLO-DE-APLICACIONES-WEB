@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{# Extiende la plantilla base para mantener el diseño común en todas las páginas #}
+
+{% block title %}Productos{% endblock %}
+{# Define el título de la página que aparecerá en la pestaña del navegador #}
+
+{% block content %}
+<h1>Inventario</h1>
+
+{# Formulario para buscar productos por nombre usando método GET #}
+<form method="get" action="{{ url_for('listar_productos') }}" class="form-inline mb-3">
+  {# Campo de texto para ingresar el término de búsqueda, se rellena con la variable 'q' si existe #}
+  <input type="text" name="q" placeholder="Buscar por nombre" value="{{ q or '' }}" class="form-control me-2">
+  <button type="submit" class="btn btn-primary">Buscar</button>
+
+  {# Si el usuario está autenticado y es administrador, se muestra un botón para crear un nuevo producto #}
+  {% if current_user.is_authenticated and current_user.es_admin() %}
+    <a class="btn btn-success ms-2" href="{{ url_for('crear_producto') }}">+ Nuevo</a>
+  {% endif %}
+</form>
+
+{# Si existen productos para mostrar #}
+{% if productos %}
+<table class="table table-striped align-middle">
+  <thead>
+    <tr>
+      <th>ID</th> {# Columna para el identificador del producto #}
+      <th>Nombre</th> {# Nombre del producto #}
+      <th>Cantidad</th> {# Cantidad disponible #}
+      <th>Precio</th> {# Precio formateado a dos decimales #}
+
+      {# Solo mostrar columna 'Acciones' si el usuario es admin #}
+      {% if current_user.is_authenticated and current_user.es_admin() %}
+        <th>Acciones</th>
+      {% endif %}
+      
+      <th>Comprar / Carrito</th> {# Columna para agregar al carrito o mostrar opciones de compra #}
+    </tr>
+  </thead>
+  <tbody>
+    {# Iterar sobre cada producto 'p' en la lista de productos #}
+    {% for p in productos %}
+    <tr>
+      <td>{{ p.id }}</td> {# Mostrar ID del producto #}
+      <td>{{ p.nombre }}</td> {# Mostrar nombre del producto #}
+      <td>{{ p.cantidad }}</td> {# Mostrar cantidad disponible #}
+      <td>${{ '%.2f'|format(p.precio) }}</td> {# Mostrar precio con dos decimales #}
+
+      {# Si es admin, mostrar botones para editar y eliminar producto #}
+      {% if current_user.is_authenticated and current_user.es_admin() %}
+      <td>
+        <a class="btn btn-sm btn-warning" href="{{ url_for('editar_producto', pid=p.id) }}">Editar</a>
+        {# Formulario para eliminar producto con confirmación #}
+        <form method="post" action="{{ url_for('eliminar_producto', pid=p.id) }}" class="d-inline"
+              onsubmit="return confirm('¿Eliminar {{ p.nombre }}?');">
+          <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+        </form>
+      </td>
+      {% endif %}
+
+      <td>
+        {# Si usuario está autenticado #}
+        {% if current_user.is_authenticated %}
+          {# Y si NO es admin, mostrar formulario para agregar al carrito #}
+          {% if not current_user.es_admin() %}
+            <form method="post" action="{{ url_for('agregar_al_carrito', pid=p.id) }}" class="d-inline">
+              {# Campo para seleccionar cantidad a comprar, con límites entre 1 y cantidad disponible #}
+              <input type="number" name="cantidad" min="1" max="{{ p.cantidad }}" value="1" required
+                     class="form-control form-control-sm" style="width: 70px; display:inline-block; vertical-align:middle;">
+              <button type="submit" class="btn btn-sm btn-success ms-1">Agregar al carrito</button>
+            </form>
+          {% else %}
+            {# Si es admin, no puede comprar, se muestra un guion #}
+            <span class="text-muted">—</span>
+          {% endif %}
+        {% else %}
+          {# Si no está autenticado, mostrar botón para iniciar sesión #}
+          <a class="btn btn-sm btn-success" href="{{ url_for('login') }}">Iniciar sesión para comprar</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+{# Mensaje si no hay productos disponibles #}
+<p>No hay productos para mostrar.</p>
+{% endif %}
+{% endblock %}
+{# Fin del bloque de contenido #}

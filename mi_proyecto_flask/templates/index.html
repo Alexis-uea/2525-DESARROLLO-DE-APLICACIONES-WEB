@@ -1,8 +1,79 @@
-{% extends "base.html"%}
+{% extends "base.html" %}
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-<h1>Bienvenido a mi sitio Flask</h1>
-<p>Esta es la página de inicio de mi aplicación Flask.</p>
-<p>Utiliza el menú de navegación para explorar más.</p>
+<div class="container mt-4">
+
+  <div class="text-center">
+    <h1 class="display-4">¡Bienvenido a Tu Supermercado de Confianza!</h1>
+    <p class="lead">En <strong>Supermercado AmazoniaMarket</strong>, encuentras todo lo que necesitas al mejor precio:
+      frutas, verduras, abarrotes, limpieza, carnes ¡y más!</p>
+    <a href="/productos" class="btn btn-success btn-lg mt-3">Ver Productos</a>
+  </div>
+
+  <div class="mt-5 text-center">
+    <img src="{{ url_for('static', filename='img/supermercado_portada.jpg') }}"
+         alt="Supermercado El Gran Aki"
+         class="img-fluid rounded shadow"
+         style="max-height: 400px;">
+  </div>
+
+  <div class="mt-5">
+    <h2>¿Por qué elegirnos?</h2>
+    <ul>
+      <li>✅ Precios bajos todos los días</li>
+      <li>✅ Gran variedad de productos</li>
+      <li>✅ Atención cercana y personalizada</li>
+      <li>✅ Promociones semanales y descuentos exclusivos</li>
+    </ul>
+  </div>
+
+  <div class="mt-5">
+    <h2>Promociones destacadas</h2>
+    <div class="row">
+
+      <!-- Tarjeta 1 -->
+      <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+          <div class="card-img-container">
+            <img src="{{ url_for('static', filename='img/promocion_1.jpg') }}" alt="Oferta 1">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Arroz 5kg</h5>
+            <p class="card-text">¡Llévalo por solo $4.99 esta semana!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2 -->
+      <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+          <div class="card-img-container">
+            <img src="{{ url_for('static', filename='img/promocion_2.jpg') }}" alt="Oferta 2">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Aceite de cocina</h5>
+            <p class="card-text">Precio especial: $2.79</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3 -->
+      <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+          <div class="card-img-container">
+            <img src="{{ url_for('static', filename='img/promocion_3.jpg') }}" alt="Oferta 3">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Combo frutas frescas</h5>
+            <p class="card-text">Ideal para tu semana, desde $3.50</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 {% endblock %}
+{# Fin del bloque de contenido #}

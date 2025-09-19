@@ -3,42 +3,122 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Título de la página, se puede sobrescribir en cada plantilla hija -->
   <title>{% block title %}{{ title or "Mi sitio Flask" }}{% endblock %}</title>
+
+  <!-- Bootstrap CSS para estilos rápidos y responsivos -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons para iconografía moderna -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <!-- Estilos personalizados del proyecto -->
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <!-- Bloque para agregar CSS adicional desde otras plantillas -->
   {% block extra_css %}{% endblock %}
 </head>
-<body>
-  <header class="site-header">
-    <nav class="nav">
-      <a href="{{ url_for('index') }}">Inicio</a>
-      <a href="{{ url_for('about') }}">Acerca de</a>
-      <a href="{{ url_for('listar_productos') }}">Productos</a>
-      <a href="{{ url_for('leer_datos') }}">Leer Datos</a>
-      <a href="{{ url_for('listar_clientes') }}">Clientes</a>
-        <a >Inventario </a>
-        <a >Ventas </a>
-        <a >Proveedores </a>
 
+<body class="bg-light text-dark d-flex flex-column min-vh-100">
+
+  <!-- ================= ENCABEZADO: Barra de navegación principal ================= -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" aria-label="Menú principal" role="navigation">
+      <div class="container">
+
+        <!-- Logo y nombre del sitio -->
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+          <!-- Imagen del logo -->
+          <img src="{{ url_for('static', filename='img/logo.png') }}"
+              alt="Logo de {{ config['NOMBRE_SITIO'] if config and 'NOMBRE_SITIO' in config else 'AmazoniaMarket' }}"
+              style="height: 48px;" loading="lazy">
+          <span class="ms-1">{{ config['NOMBRE_SITIO'] if config and 'NOMBRE_SITIO' in config else 'AmazoniaMarket' }}</span>
+        </a>
+
+
+        <!-- Botón hamburguesa para menú responsive en móviles -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar menú de navegación">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menú de navegación colapsable -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+          <!-- Enlaces principales a la izquierda -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Acerca de</a></li>
+
+            <!-- Carrito de compras con icono y contador de productos -->
+            <li class="nav-item mx-2">
+              <a class="nav-link position-relative" href="{{ url_for('carrito') }}" aria-label="Ver carrito de compras">
+                <i class="bi bi-cart" style="font-size: 1.3rem;"></i>
+                {% set carrito = session.get('carrito', {}) %}
+                {% if carrito %}
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ carrito|length }}
+                    <span class="visually-hidden">productos en el carrito</span>
+                  </span>
+                {% endif %}
+              </a>
+            </li>
+
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_productos') }}">Productos</a></li>
+          </ul>
+
+          <!-- Enlaces de usuario (autenticado o no) a la derecha -->
+          <ul class="navbar-nav">
+            {% if current_user.is_authenticated %}
+              {% if current_user.es_admin() %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+              {% endif %}
+              <li class="nav-item">
+                <span class="nav-link disabled">Hola, {{ current_user.nombre }}</span>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Iniciar sesión</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Registrarse</a></li>
+            {% endif %}
+          </ul>
+
+        </div>
+      </div>
     </nav>
   </header>
-{% with msgs = get_flashed_messages(with_categories=true) %}
-  {% if msgs %}
-    <div class="flash-container">
-      {% for cat, msg in msgs %}
-        <div class="flash {{ cat }}">{{ msg }}</div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
 
-  <main class="container">
+  <!-- ================= MENSAJES FLASH (alertas de éxito, error, etc.) ================= -->
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% if msgs %}
+      <div class="container mt-3" role="alert">
+        {% for cat, msg in msgs %}
+          <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- ================= CONTENIDO PRINCIPAL ================= -->
+  <main class="container flex-grow-1 py-4" role="main">
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="site-footer">
-    <small>© {{ 2025 }} Derechos de autor</small>
+  <!-- ================= PIE DE PÁGINA ================= -->
+  <footer class="bg-dark text-white text-center py-3 mt-auto" role="contentinfo">
+    <div class="container">
+      <!-- Puedes personalizar el texto del footer aquí -->
+      <p class="mb-0">© {{ now().year }} {{ config['NOMBRE_SITIO'] if config and 'NOMBRE_SITIO' in config else 'AmazoniaMarket' }} - Todos los derechos reservados.</p>
+    </div>
   </footer>
 
+  <!-- Bootstrap JS con Popper incluido para componentes interactivos -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Bloque para agregar scripts JS adicionales desde otras plantillas -->
   {% block extra_js %}{% endblock %}
 </body>
 </html>

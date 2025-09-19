@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Mis Compras{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2>Mis Compras</h2>
+
+  {% if compras %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in compras %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.producto }}</td>
+        <td>{{ c.cantidad }}</td>
+        <td>{{ c.fecha.strftime('%Y-%m-%d %H:%M') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No has realizado compras aún.</p>
+  {% endif %}
+</div>
+{% endblock %}

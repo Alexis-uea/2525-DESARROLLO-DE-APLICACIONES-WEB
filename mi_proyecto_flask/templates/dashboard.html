@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Panel de Control{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4">Bienvenido, {{ current_user.nombre }}</h2>
+
+  {% if es_admin %}
+    <!-- Vista para el ADMINISTRADOR -->
+    <p class="text-muted">Estás viendo el panel de administrador del sistema.</p>
+
+    <!-- Tarjetas resumen -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Productos en sistema</h5>
+            <p class="card-text display-6">{{ total_productos }}</p>
+            <a href="{{ url_for('listar_productos') }}" class="btn btn-light btn-sm mt-2">Ver todos</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Usuarios registrados</h5>
+            <p class="card-text display-6">{{ total_usuarios }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Compras realizadas</h5>
+            <p class="card-text display-6">{{ total_compras }}</p>
+            <a href="{{ url_for('mis_compras') }}" class="btn btn-light btn-sm mt-2">Ver historial</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="d-flex gap-3 mb-4">
+      <a href="{{ url_for('crear_producto') }}" class="btn btn-outline-dark">Agregar nuevo producto</a>
+    </div>
+
+
+  {% else %}
+    <!-- Vista para el CLIENTE -->
+    <p>Desde aquí puedes acceder a los productos disponibles o consultar tu historial de compras.</p>
+
+    <div class="mt-4">
+      <a href="{{ url_for('listar_productos') }}" class="btn btn-primary me-2">Ver productos</a>
+      <a href="{{ url_for('mis_compras') }}" class="btn btn-secondary">Mis compras</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
